@@ -1,0 +1,17 @@
+# Microsoft Office temp / lock files
+~$*
+~WRL*.tmp
+*.tmp
+
+# Node.js
+node_modules/
+
+# Environment / secrets
+.env
+
+# SQLite database files
+backend/data/
+
+# OS files
+.DS_Store
+Thumbs.db
