@@ -8,6 +8,8 @@ export function mountCalendar(container) {
   viewYear = ty;
   viewMonth = tm - 1;
 
+  let lastHtml = '';
+
   function render() {
     const { selectedDate, today } = getState();
     const monthName = new Date(viewYear, viewMonth, 1)
@@ -36,7 +38,7 @@ export function mountCalendar(container) {
       cells.push(`<div class="day other-month">${i}</div>`);
     }
 
-    container.innerHTML = `
+    const html = `
       <div class="card-title">Calendar</div>
       <div class="calendar-header">
         <button data-nav="prev" aria-label="Previous month">‹</button>
@@ -45,6 +47,9 @@ export function mountCalendar(container) {
       </div>
       <div class="calendar-grid">${cells.join('')}</div>
     `;
+    if (html === lastHtml) return;
+    lastHtml = html;
+    container.innerHTML = html;
     container.querySelector('[data-nav="prev"]').addEventListener('click', () => {
       viewMonth--; if (viewMonth < 0) { viewMonth = 11; viewYear--; } render();
     });

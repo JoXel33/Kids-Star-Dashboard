@@ -1,6 +1,6 @@
 import express from 'express';
 
-export function createDaysRouter({ agendaService, authMiddleware }) {
+export function createDaysRouter({ agendaService, starService, authMiddleware }) {
   const router = express.Router();
   router.use(authMiddleware);
 
@@ -20,6 +20,15 @@ export function createDaysRouter({ agendaService, authMiddleware }) {
         req.child.id, date, hour, activity, clientDate, clientTime,
       );
       res.json({ entry });
+    } catch (e) { next(e); }
+  });
+
+  router.put('/:date/star', (req, res, next) => {
+    try {
+      const date = req.params.date;
+      const { earned, clientDate, clientTime } = req.body || {};
+      const star = starService.setStar(req.child.id, date, !!earned, clientDate, clientTime);
+      res.json({ star });
     } catch (e) { next(e); }
   });
 

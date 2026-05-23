@@ -9,10 +9,19 @@
       "Bash(node --experimental-sqlite -e \"const {DatabaseSync} = require\\('node:sqlite'\\); const db = new DatabaseSync\\(':memory:'\\); db.exec\\('CREATE TABLE t \\(x INTEGER\\); INSERT INTO t VALUES \\(42\\)'\\); console.log\\(db.prepare\\('SELECT x FROM t'\\).get\\(\\)\\);\")",
       "Bash(rm -f data/dashboard.e2e.sqlite* && npm run test:e2e 2>&1 | tail -30)",
       "Bash(sed -i 's|frontend/tests/e2e/us1-agenda.spec.js|backend/tests/e2e/us1-agenda.spec.js|g' specs/001-kids-star-dashboard/tasks.md)",
-      "Read(//c/c/Users/jiokm/speckit_test/DashWithClaude/specs/001-kids-star-dashboard/**)"
+      "Read(//c/c/Users/jiokm/speckit_test/DashWithClaude/specs/001-kids-star-dashboard/**)",
+      "Bash(git rm *)",
+      "Bash(rm -f data/dashboard.e2e.sqlite* && npm test 2>&1 | tail -6 && echo \"=== E2E ===\" && npm run test:e2e 2>&1 | tail -10)",
+      "Bash(rm -f data/dashboard.e2e.sqlite* && npx playwright test tests/e2e/us3-rewards.spec.js 2>&1 | tail -25)",
+      "Bash(rm -f data/dashboard.e2e.sqlite* && npm run test:e2e -- tests/e2e/us3-rewards.spec.js 2>&1 | tail -30)",
+      "Bash(node -e \"console.log\\('local:', new Date\\(\\).toString\\(\\)\\)\")",
+      "Bash(cd /c/Users/jiokm/speckit_test/DashWithClaude && sed -i -E 's/^- \\\\[ \\\\] \\(T0\\(3[1-9]|4[0-9]|5[0-7]\\)\\) /- [X] \\\\1 /g' specs/001-kids-star-dashboard/tasks.md && grep -E '^- \\\\[[ X]\\\\] T0\\(3[0-9]|4[0-9]|5[0-9]\\)' specs/001-kids-star-dashboard/tasks.md | head -30 && echo \"---\" && grep -c '^- \\\\[ \\\\]' specs/001-kids-star-dashboard/tasks.md && echo \"tasks still unchecked\")"
     ],
     "additionalDirectories": [
-      "C:\\Users\\jiokm\\speckit_test\\DashWithClaude\\backend\\data"
+      "C:\\Users\\jiokm\\speckit_test\\DashWithClaude\\backend\\data",
+      "c:\\Users\\jiokm\\speckit_test\\DashWithClaude\\data",
+      "C:\\Users\\jiokm\\speckit_test\\DashWithClaude\\data",
+      "c:\\c\\Users\\jiokm\\speckit_test\\DashWithClaude\\specs\\001-kids-star-dashboard"
     ]
   }
 }

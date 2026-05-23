@@ -1,14 +1,20 @@
 import { api, hasToken, clearToken } from './api.js';
 import { getState, setState, subscribe } from './state.js';
-import { todayDate, nowTime } from './time.js';
+import { todayDate } from './time.js';
 import { mountAuth, hideAuth } from './components/auth.js';
 import { mountGreeting } from './components/greeting.js';
 import { mountCalendar } from './components/calendar.js';
 import { mountAgenda } from './components/agenda.js';
+import { mountStar } from './components/star.js';
+import { mountWallet } from './components/wallet.js';
+import { mountRewards } from './components/rewards.js';
+import { mountSettings } from './components/settings.js';
 
 const authScreen = document.querySelector('#auth-screen');
 const dashboard = document.querySelector('#dashboard');
 const loading = document.querySelector('#loading');
+
+let dashboardMounted = false;
 
 function showAuth() {
   loading.hidden = true;
@@ -30,12 +36,25 @@ async function showDashboard() {
   const today = todayDate();
   setState({ today, selectedDate: today });
 
-  mountGreeting(document.querySelector('#greeting-card'));
-  mountCalendar(document.querySelector('#calendar-card'));
-  mountAgenda(document.querySelector('#agenda-card'));
+  if (!dashboardMounted) {
+    // US1: greeting + calendar + agenda
+    mountGreeting(document.querySelector('#greeting-card'));
+    mountCalendar(document.querySelector('#calendar-card'));
+    mountAgenda(document.querySelector('#agenda-card'));
 
-  renderTodayDateCard();
-  renderPlaceholders();
+    // US2: star + wallet
+    mountStar(document.querySelector('#star-card'));
+    mountWallet(document.querySelector('#wallet-card'));
+
+    // US3: rewards
+    mountRewards(document.querySelector('#rewards-card'));
+
+    // Principle V — data deletion control (floating gear)
+    mountSettings();
+
+    renderTodayDateCard();
+    dashboardMounted = true;
+  }
 
   await loadDay(today);
 }
@@ -51,22 +70,10 @@ function updateTodayDateText() {
   const el = document.querySelector('#today-date-text');
   if (!el) return;
   const t = todayDate();
-  if (t !== getState().today) {
-    setState({ today: t });
-  }
-  const long = new Date(`${t}T00:00:00`).toLocaleDateString(undefined, {
+  if (t !== getState().today) setState({ today: t });
+  el.textContent = new Date(`${t}T00:00:00`).toLocaleDateString(undefined, {
     weekday: 'long', month: 'long', day: 'numeric',
   });
-  el.textContent = long;
-}
-
-function renderPlaceholders() {
-  document.querySelector('#star-card').innerHTML =
-    `<div class="card-title">Today's Star</div><div class="placeholder-note">Coming in User Story 2 ⭐</div>`;
-  document.querySelector('#wallet-card').innerHTML =
-    `<div class="card-title">Star Wallet</div><div class="placeholder-note">Coming in User Story 2 💰</div>`;
-  document.querySelector('#rewards-card').innerHTML =
-    `<div class="card-title">Your Rewards</div><div class="placeholder-note">Coming in User Story 3 🎁</div>`;
 }
 
 async function loadDay(date) {
@@ -76,6 +83,7 @@ async function loadDay(date) {
   } catch (e) {
     if (e.status === 401) { clearToken(); showAuth(); return; }
     console.error('loadDay error:', e);
+    setState({ error: e.message });
   }
 }
 

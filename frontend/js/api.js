@@ -40,4 +40,17 @@ export const api = {
   // Days / agenda (US1)
   getDay: (date) => request('GET', `/api/days/${date}`),
   saveAgenda: (date, hour, body) => request('PUT', `/api/days/${date}/agenda/${hour}`, body),
+
+  // Star + wallet (US2)
+  setStar: (date, earned, clientDate, clientTime) =>
+    request('PUT', `/api/days/${date}/star`, { earned, clientDate, clientTime }),
+  getWallet: (clientDate, clientTime) =>
+    request('GET', `/api/wallet?clientDate=${encodeURIComponent(clientDate)}&clientTime=${encodeURIComponent(clientTime)}`),
+
+  // Wants / rewards (US3)
+  listWants: () => request('GET', '/api/wants'),
+  addWant: (description, cost) => request('POST', '/api/wants', { description, cost }),
+  removeWant: (id) => request('DELETE', `/api/wants/${id}`),
+  redeemWant: (id, clientDate, clientTime) =>
+    request('POST', `/api/wants/${id}/redeem`, { clientDate, clientTime }),
 };

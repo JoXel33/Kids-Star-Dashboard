@@ -7,9 +7,14 @@ const HOURS = Array.from({ length: AGENDA_END_HOUR - AGENDA_START_HOUR }, (_, i)
 let editingHour = null;
 
 export function mountAgenda(container) {
+  let lastKey = '';
+
   function render() {
     const { selectedDate, day, today } = getState();
     const time = nowTime();
+    const key = `${selectedDate}|${today}|${time}|${editingHour}|${JSON.stringify(day?.agenda || [])}`;
+    if (key === lastKey) return;
+    lastKey = key;
     container.innerHTML = `
       <div class="card-title">Agenda — ${formatHeader(selectedDate, today)}</div>
       <div class="agenda-list" id="agenda-list"></div>

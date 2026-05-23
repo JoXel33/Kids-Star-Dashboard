@@ -114,19 +114,19 @@ not change with date selection.
 
 ### Tests for User Story 2 (write first — must fail before implementation) ⚠️
 
-- [ ] T031 [P] [US2] Contract tests for the star/wallet endpoints in `backend/tests/contract/star-wallet.test.js` (`PUT /api/days/{date}/star` including `star_not_today` and `star_locked`, `GET /api/wallet`)
-- [ ] T032 [P] [US2] Integration test for the US2 flow in `backend/tests/integration/us2-stars.test.js` (toggle star, 21:30 lock and counting, wallet totals, date-selection independence)
-- [ ] T033 [P] [US2] End-to-end test for US2 in `frontend/tests/e2e/us2-stars.spec.js` (toggle today's star, past-date star read-only, wallet values)
+- [X] T031 [P] [US2] Contract tests for the star/wallet endpoints in `backend/tests/contract/star-wallet.test.js` (`PUT /api/days/{date}/star` including `star_not_today` and `star_locked`, `GET /api/wallet`)
+- [X] T032 [P] [US2] Integration test for the US2 flow in `backend/tests/integration/us2-stars.test.js` (toggle star, 21:30 lock and counting, wallet totals, date-selection independence)
+- [X] T033 [P] [US2] End-to-end test for US2 in `frontend/tests/e2e/us2-stars.spec.js` (toggle today's star, past-date star read-only, wallet values)
 
 ### Implementation for User Story 2
 
-- [ ] T034 [P] [US2] Implement `starService` in `backend/src/services/starService.js` (`getStar`, `setStar` with current-day and pre-21:30 validation)
-- [ ] T035 [P] [US2] Implement `walletService` in `backend/src/services/walletService.js` (compute Stars Collected from counted day-stars, read Stars Spent, derive Star Balance)
-- [ ] T036 [US2] Add the star route to `backend/src/routes/days.js` (`PUT /api/days/{date}/star`)
-- [ ] T037 [P] [US2] Implement the wallet route in `backend/src/routes/wallet.js` (`GET /api/wallet`)
-- [ ] T038 [P] [US2] Implement the star component in `frontend/js/components/star.js` (toggle for today only, locked after 21:30, read-only for other dates)
-- [ ] T039 [P] [US2] Implement the wallet component in `frontend/js/components/wallet.js` (Stars Collected, Stars Spent, Star Balance; unaffected by date selection)
-- [ ] T040 [US2] Wire the star and wallet components into the render loop in `frontend/js/app.js`
+- [X] T034 [P] [US2] Implement `starService` in `backend/src/services/starService.js` (`getStar`, `setStar` with current-day and pre-21:30 validation)
+- [X] T035 [P] [US2] Implement `walletService` in `backend/src/services/walletService.js` (compute Stars Collected from counted day-stars, read Stars Spent, derive Star Balance)
+- [X] T036 [US2] Add the star route to `backend/src/routes/days.js` (`PUT /api/days/{date}/star`)
+- [X] T037 [P] [US2] Implement the wallet route in `backend/src/routes/wallet.js` (`GET /api/wallet`)
+- [X] T038 [P] [US2] Implement the star component in `frontend/js/components/star.js` (toggle for today only, locked after 21:30, read-only for other dates)
+- [X] T039 [P] [US2] Implement the wallet component in `frontend/js/components/wallet.js` (Stars Collected, Stars Spent, Star Balance; unaffected by date selection)
+- [X] T040 [US2] Wire the star and wallet components into the render loop in `frontend/js/app.js`
 
 **Checkpoint**: User Stories 1 and 2 both work independently.
 
@@ -144,16 +144,16 @@ removed, and confirm no 4th Want can be added.
 
 ### Tests for User Story 3 (write first — must fail before implementation) ⚠️
 
-- [ ] T041 [P] [US3] Contract tests for the wants endpoints in `backend/tests/contract/wants.test.js` (`GET/POST/DELETE /api/wants`, `POST /api/wants/{id}/redeem` including `want_limit_reached` and `insufficient_balance`)
-- [ ] T042 [P] [US3] Integration test for the US3 flow in `backend/tests/integration/us3-rewards.test.js` (add/remove, redeem with balance check and Stars Spent update, 3-Want limit, date-selection independence)
-- [ ] T043 [P] [US3] End-to-end test for US3 in `frontend/tests/e2e/us3-rewards.spec.js` (add Want, redeem when affordable, no redeem when not, remove Want, add disabled at 3)
+- [X] T041 [P] [US3] Contract tests for the wants endpoints in `backend/tests/contract/wants.test.js` (`GET/POST/DELETE /api/wants`, `POST /api/wants/{id}/redeem` including `want_limit_reached` and `insufficient_balance`)
+- [X] T042 [P] [US3] Integration test for the US3 flow in `backend/tests/integration/us3-rewards.test.js` (add/remove, redeem with balance check and Stars Spent update, 3-Want limit, date-selection independence)
+- [X] T043 [P] [US3] End-to-end test for US3 in `frontend/tests/e2e/us3-rewards.spec.js` (add Want, redeem when affordable, no redeem when not, remove Want, add disabled at 3)
 
 ### Implementation for User Story 3
 
-- [ ] T044 [US3] Implement `wantService` in `backend/src/services/wantService.js` (list, add with the 3-Want limit, remove, redeem as a single transaction validating balance and incrementing `stars_spent`)
-- [ ] T045 [US3] Implement the wants route in `backend/src/routes/wants.js` (`GET/POST/DELETE /api/wants`, `POST /api/wants/{id}/redeem`)
-- [ ] T046 [US3] Implement the rewards component in `frontend/js/components/rewards.js` (list of ≤3 Wants with description and 1–5 star cost rating, add when fewer than 3, remove non-redeemed, redeem only when affordable)
-- [ ] T047 [US3] Wire the rewards component into the render loop in `frontend/js/app.js`
+- [X] T044 [US3] Implement `wantService` in `backend/src/services/wantService.js` (list, add with the 3-Want limit, remove, redeem as a single transaction validating balance and incrementing `stars_spent`)
+- [X] T045 [US3] Implement the wants route in `backend/src/routes/wants.js` (`GET/POST/DELETE /api/wants`, `POST /api/wants/{id}/redeem`)
+- [X] T046 [US3] Implement the rewards component in `frontend/js/components/rewards.js` (list of ≤3 Wants with description and 1–5 star cost rating, add when fewer than 3, remove non-redeemed, redeem only when affordable)
+- [X] T047 [US3] Wire the rewards component into the render loop in `frontend/js/app.js`
 
 **Checkpoint**: All three user stories are independently functional.
 
@@ -163,20 +163,20 @@ removed, and confirm no 4th Want can be added.
 
 **Purpose**: Improvements spanning multiple user stories.
 
-- [ ] T048 [P] Verify all six sections fit one screen with no full-page scroll at 1366×768 and adjust `frontend/css/styles.css`
-- [ ] T049 [P] Add loading, empty, and error states to all section components in `frontend/js/components/`
-- [ ] T050 [P] Add unit tests for `backend/src/lib/hash.js` and `backend/src/lib/time.js` in `backend/tests/unit/`
-- [ ] T051 Run the `quickstart.md` smoke-test checklist end-to-end and fix any issues found
-- [ ] T052 [P] Update the repository `README.md` with setup, run, and test instructions
+- [X] T048 [P] Verify all six sections fit one screen with no full-page scroll at 1366×768 and adjust `frontend/css/styles.css`
+- [X] T049 [P] Add loading, empty, and error states to all section components in `frontend/js/components/`
+- [X] T050 [P] Add unit tests for `backend/src/lib/hash.js` and `backend/src/lib/time.js` in `backend/tests/unit/`
+- [X] T051 Run the `quickstart.md` smoke-test checklist end-to-end and fix any issues found
+- [X] T052 [P] Update the repository `README.md` with setup, run, and test instructions
 
 ### Children's data protection (Constitution Principle V follow-up)
 
 Addresses `/speckit-analyze` finding **C2**: the backend `DELETE /api/children/me` endpoint
 exists (T014), but no UI control wires it. Required by Principle V ("deletable on demand").
 
-- [ ] T053 [P] End-to-end test for "Delete my data" in `frontend/tests/e2e/data-deletion.spec.js` (open settings, confirm the dialog, verify `DELETE /api/children/me` is called, the local session is cleared, and the first-use setup screen is shown) — must fail before T054 / T055
-- [ ] T054 [P] Add the settings component in `frontend/js/components/settings.js` (a "Delete my data" control plus a confirmation dialog; on confirm, call `DELETE /api/children/me`, clear the local session, and return to the first-use setup)
-- [ ] T055 Wire the settings component into the render loop in `frontend/js/app.js`
+- [X] T053 [P] End-to-end test for "Delete my data" in `frontend/tests/e2e/data-deletion.spec.js` (open settings, confirm the dialog, verify `DELETE /api/children/me` is called, the local session is cleared, and the first-use setup screen is shown) — must fail before T054 / T055
+- [X] T054 [P] Add the settings component in `frontend/js/components/settings.js` (a "Delete my data" control plus a confirmation dialog; on confirm, call `DELETE /api/children/me`, clear the local session, and return to the first-use setup)
+- [X] T055 Wire the settings component into the render loop in `frontend/js/app.js`
 
 ### Name editability (FR-003 follow-up)
 
@@ -185,8 +185,8 @@ change their name. First-use setup (T020) collects it and the greeting (T027) di
 but no task provides an edit affordance. Backend `PATCH /api/children/me` already exists
 (T014).
 
-- [ ] T056 [P] End-to-end test for name editing in `frontend/tests/e2e/name-edit.spec.js` (logged-in user clicks the name in the greeting, edits it, saves, reloads, and the new name persists) — must fail before T057
-- [ ] T057 [P] Add an inline name-edit affordance to `frontend/js/components/greeting.js` (click/tap the name → input → save → call `PATCH /api/children/me` → update state and re-render the greeting)
+- [X] T056 [P] End-to-end test for name editing in `frontend/tests/e2e/name-edit.spec.js` (logged-in user clicks the name in the greeting, edits it, saves, reloads, and the new name persists) — must fail before T057
+- [X] T057 [P] Add an inline name-edit affordance to `frontend/js/components/greeting.js` (click/tap the name → input → save → call `PATCH /api/children/me` → update state and re-render the greeting)
 
 ---
 

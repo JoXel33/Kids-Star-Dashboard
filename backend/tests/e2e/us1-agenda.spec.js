@@ -1,6 +1,8 @@
 import { test, expect } from '@playwright/test';
 
 test('US1 — first-use setup, greeting/calendar/agenda render, save an activity', async ({ page }) => {
+  // Freeze the browser clock at noon so the agenda has upcoming hours regardless of when the test runs.
+  await page.clock.install({ time: new Date('2026-05-23T12:00:00') });
   await page.goto('/');
 
   // First-use setup with a unique code (E2E DB persists across runs)
