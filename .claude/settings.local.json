@@ -1,7 +1,12 @@
 {
   "permissions": {
     "allow": [
-      "PowerShell(& \"c:\\\\Users\\\\jiokm\\\\speckit_test\\\\DashWithClaude\\\\.specify\\\\scripts\\\\powershell\\\\setup-tasks.ps1\" -Json)"
+      "PowerShell(& \"c:\\\\Users\\\\jiokm\\\\speckit_test\\\\DashWithClaude\\\\.specify\\\\scripts\\\\powershell\\\\setup-tasks.ps1\" -Json)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "PowerShell(& \"c:\\\\Users\\\\jiokm\\\\speckit_test\\\\DashWithClaude\\\\.specify\\\\scripts\\\\powershell\\\\check-prerequisites.ps1\" -Json -RequireTasks -IncludeTasks)",
+      "Bash(npm install *)",
+      "Bash(node --experimental-sqlite -e \"const {DatabaseSync} = require\\('node:sqlite'\\); const db = new DatabaseSync\\(':memory:'\\); db.exec\\('CREATE TABLE t \\(x INTEGER\\); INSERT INTO t VALUES \\(42\\)'\\); console.log\\(db.prepare\\('SELECT x FROM t'\\).get\\(\\)\\);\")"
     ]
   }
 }

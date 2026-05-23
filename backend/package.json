@@ -1,0 +1,24 @@
+{
+  "name": "kids-star-dashboard-backend",
+  "version": "1.0.0",
+  "description": "Kids Star Dashboard — daily planner & star reward system (backend + static frontend)",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node --env-file=.env --experimental-sqlite src/server.js",
+    "dev": "node --env-file=.env --experimental-sqlite --watch src/server.js",
+    "init-db": "node --env-file=.env --experimental-sqlite src/db/init-db.js",
+    "test": "node --experimental-sqlite --test --test-reporter=spec tests/**/*.test.js",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "express": "^4.21.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.47.0",
+    "supertest": "^7.0.0"
+  }
+}

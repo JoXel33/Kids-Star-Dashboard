@@ -26,13 +26,21 @@ items are resolved — no `NEEDS CLARIFICATION` markers remain in the spec or pl
 
 ## 3. Storage
 
-- **Decision**: SQLite (single file) accessed via `better-sqlite3`.
+- **Decision**: SQLite (single file). Accessed via the Node-built-in `node:sqlite`
+  module (`DatabaseSync`) rather than `better-sqlite3`.
 - **Rationale**: Data volume is tiny and write concurrency is effectively single-user per
-  child. SQLite is zero-config, file-based, transactional, and ideal for this scale.
-  `better-sqlite3` offers a fast synchronous API that keeps service code simple.
+  child. SQLite is zero-config, file-based, transactional, and ideal for this scale. A
+  synchronous API keeps service code simple. `node:sqlite` provides this without a native
+  build step (see implementation note below).
+- **Implementation pivot (during `/speckit-implement`)**: The plan originally specified
+  `better-sqlite3`, but its native build failed on the user's Node v24 / Windows
+  toolchain. `node:sqlite` (available in Node 22+, accessed with `--experimental-sqlite`)
+  is the same SQLite engine with a near-identical synchronous API and required no native
+  build. All design decisions in this document remain valid against `node:sqlite`.
 - **Alternatives considered**: PostgreSQL (operational overhead unjustified at this scale);
   a plain JSON file (no transactions, no constraints, risk of corruption on concurrent
-  writes).
+  writes); pinning an older `better-sqlite3` with prebuilt binaries (would still risk
+  re-breaking on future Node upgrades).
 
 ## 4. Authority for date & time
 

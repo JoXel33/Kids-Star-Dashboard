@@ -1,0 +1,164 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  font-family: 'Nunito', sans-serif;
+  background: linear-gradient(180deg, #b8e8ff 0%, #d4f0fa 30%, #e8f8ff 60%, #f0e8ff 100%);
+  min-height: 100vh;
+  color: #2a2240;
+  overflow: hidden;
+}
+
+.wave-bg {
+  position: fixed; bottom: 0; left: 0; right: 0; height: 120px;
+  background: linear-gradient(180deg, transparent, rgba(100,180,255,0.25));
+  pointer-events: none; z-index: 0;
+}
+
+#root {
+  position: relative; z-index: 1;
+  max-width: 1320px; height: 100vh;
+  margin: 0 auto; padding: 14px 18px;
+  display: flex; flex-direction: column;
+}
+
+.screen { display: none; flex: 1; min-height: 0; flex-direction: column; }
+.screen:not([hidden]) { display: flex; }
+
+.card {
+  background: rgba(255,255,255,0.78);
+  backdrop-filter: blur(8px);
+  border-radius: 22px;
+  padding: 14px 18px;
+  border: 3px solid rgba(255,255,255,0.92);
+  box-shadow: 0 4px 18px rgba(180,140,220,0.14);
+}
+
+.card-title {
+  font-family: 'Fredoka One', cursive;
+  font-size: 17px;
+  margin-bottom: 10px;
+  color: #8040c0;
+}
+
+/* Top band */
+.row.top { display: flex; gap: 14px; margin-bottom: 12px; }
+.greeting-card {
+  flex: 1;
+  background: linear-gradient(135deg, #ff9dc6 0%, #ffc2dc 40%, #c8a8ff 100%);
+  color: white;
+  border: 3px solid rgba(255,255,255,0.7);
+  box-shadow: 0 8px 28px rgba(200,120,200,0.22);
+  display: flex; align-items: center; min-height: 64px;
+}
+.greeting-card .hello {
+  font-family: 'Fredoka One', cursive;
+  font-size: 24px;
+  text-shadow: 0 2px 6px rgba(180,80,160,0.4);
+}
+.greeting-card .name { font-style: normal; }
+.today-date-card {
+  width: 260px;
+  text-align: center;
+  background: linear-gradient(135deg, #a8d8ff, #c4e8ff, #daf0ff);
+  display: flex; flex-direction: column; justify-content: center;
+}
+.today-date-card .today-date {
+  font-family: 'Fredoka One', cursive;
+  font-size: 16px;
+  color: #2060a0;
+}
+
+/* Main grid */
+.grid.main { flex: 1; display: grid; grid-template-columns: 1.6fr 1fr; gap: 14px; min-height: 0; }
+.col { display: flex; flex-direction: column; gap: 14px; min-height: 0; }
+.col.left .agenda-card { flex: 2.2; min-height: 0; display: flex; flex-direction: column; }
+.col.left .rewards-card { flex: 1; min-height: 0; }
+.col.right .star-card { flex: 1; }
+.col.right .wallet-card { flex: 1; }
+.col.right .calendar-card { flex: 2; min-height: 0; display: flex; flex-direction: column; }
+
+/* Agenda */
+.agenda-list { flex: 1; overflow-y: auto; padding-right: 4px; }
+.agenda-row {
+  display: grid; grid-template-columns: 100px 1fr 80px;
+  align-items: center;
+  gap: 8px; padding: 8px 10px;
+  border-radius: 14px; margin-bottom: 6px;
+  background: rgba(255,255,255,0.55);
+  min-height: 44px;
+}
+.agenda-row.elapsed { opacity: 0.55; background: rgba(220,220,235,0.4); }
+.agenda-row .time { font-weight: 800; color: #6090c0; font-size: 13px; }
+.agenda-row .activity { font-size: 14px; }
+.agenda-row .activity input {
+  width: 100%; border: 2px solid #c8a8ff; background: rgba(255,255,255,0.85);
+  border-radius: 10px; padding: 6px 8px; font: inherit; outline: none;
+}
+.agenda-row .edit-btn, .agenda-row .save-btn {
+  border: none; border-radius: 12px; padding: 6px 10px;
+  font-family: 'Fredoka One', cursive; font-size: 12px; cursor: pointer;
+  color: white;
+}
+.agenda-row .edit-btn { background: linear-gradient(135deg, #ff9dc6, #c8a8ff); }
+.agenda-row .save-btn { background: linear-gradient(135deg, #80d0a0, #50b080); }
+.agenda-row.elapsed .edit-btn, .agenda-row.elapsed .save-btn { display: none; }
+.elapsed-tag {
+  font-size: 11px; color: #b070b0; font-weight: 700; text-transform: uppercase;
+  text-align: right;
+}
+
+/* Calendar */
+.calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; flex: 1; align-content: start; }
+.calendar-grid .day {
+  text-align: center; padding: 6px 0; border-radius: 8px;
+  font-size: 13px; font-weight: 700;
+  background: rgba(255,255,255,0.5);
+  cursor: pointer; user-select: none;
+}
+.calendar-grid .day.dow {
+  background: transparent; color: #6060a0; font-size: 11px; cursor: default; padding-bottom: 2px;
+}
+.calendar-grid .day.today { background: linear-gradient(135deg, #ff9dc6, #c8a8ff); color: white; }
+.calendar-grid .day.selected { outline: 3px solid #80d0ff; }
+.calendar-grid .day.other-month { color: #b0b0c0; cursor: default; }
+.calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.calendar-header button {
+  background: none; border: 2px solid #c8a8ff; border-radius: 10px;
+  padding: 2px 10px; cursor: pointer; color: #8040c0; font-weight: 800; font-size: 16px;
+}
+.calendar-header .month { font-family: 'Fredoka One', cursive; color: #4080d0; font-size: 16px; }
+
+/* Right-column placeholders (US2/US3 fill these in later) */
+.placeholder-note {
+  font-size: 13px; color: #8060a0; text-align: center; padding: 8px;
+}
+
+/* Auth screen */
+#auth-screen { align-items: center; justify-content: center; }
+#auth-screen .auth-card {
+  width: 440px; max-width: 92vw;
+  background: rgba(255,255,255,0.92);
+  border-radius: 24px; padding: 24px;
+  border: 3px solid rgba(255,255,255,0.95);
+  box-shadow: 0 12px 40px rgba(180,140,220,0.3);
+}
+#auth-screen h1 { font-family: 'Fredoka One', cursive; font-size: 26px; color: #8040c0; margin-bottom: 12px; }
+#auth-screen p.lead { color: #6050a0; margin-bottom: 14px; }
+#auth-screen label { display: block; font-weight: 800; margin-top: 12px; font-size: 14px; color: #604080; }
+#auth-screen input {
+  width: 100%; padding: 10px 12px; margin-top: 4px;
+  border: 2px solid #d0a0e0; border-radius: 12px; font: inherit; outline: none;
+}
+#auth-screen button.primary {
+  margin-top: 18px; width: 100%; padding: 12px;
+  background: linear-gradient(135deg, #ff9dc6, #c8a8ff);
+  color: white; border: none; border-radius: 14px;
+  font-family: 'Fredoka One', cursive; font-size: 17px; cursor: pointer;
+}
+#auth-screen .links { margin-top: 12px; text-align: center; font-size: 13px; }
+#auth-screen .links a { color: #8040c0; cursor: pointer; text-decoration: underline; margin: 0 6px; }
+#auth-screen .error-msg { color: #c04040; font-weight: 700; margin-top: 8px; font-size: 13px; min-height: 18px; }
+
+/* Loading screen */
+.loading-screen { align-items: center; justify-content: center; }
+.loading-text { font-family: 'Fredoka One', cursive; font-size: 22px; color: #6090c0; }

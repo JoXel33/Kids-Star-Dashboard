@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kids Star Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+  <div class="wave-bg" aria-hidden="true"></div>
+
+  <main id="root">
+    <section id="loading" class="screen loading-screen">
+      <div class="loading-text">Loading…</div>
+    </section>
+
+    <section id="auth-screen" class="screen" hidden></section>
+
+    <section id="dashboard" class="screen" hidden>
+      <div class="row top">
+        <div id="greeting-card" class="card greeting-card"></div>
+        <div id="today-date-card" class="card today-date-card"></div>
+      </div>
+      <div class="grid main">
+        <div class="col left">
+          <div id="agenda-card" class="card agenda-card"></div>
+          <div id="rewards-card" class="card rewards-card"></div>
+        </div>
+        <div class="col right">
+          <div id="star-card" class="card star-card"></div>
+          <div id="wallet-card" class="card wallet-card"></div>
+          <div id="calendar-card" class="card calendar-card"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="/js/app.js"></script>
+</body>
+</html>

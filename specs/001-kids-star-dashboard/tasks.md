@@ -30,10 +30,10 @@ HTML/CSS/JS), both served by one Express process. Paths below are repository-roo
 
 **Purpose**: Project initialization and tooling.
 
-- [ ] T001 Create the `backend/` and `frontend/` directory structure per plan.md (`backend/src/{db,middleware,routes,services,lib}`, `backend/tests/{contract,integration,unit}`, `backend/data/`, `frontend/{css,js/components,tests/e2e}`)
-- [ ] T002 Initialize the backend Node.js project in `backend/package.json` (`"type": "module"`; dependencies `express`, `better-sqlite3`; devDependencies `supertest`, `@playwright/test`; scripts `start`, `dev`, `init-db`, `test`, `test:e2e`)
-- [ ] T003 [P] Create `backend/.env.example` and `backend/.env` with `PORT=3000`, `SERVER_SECRET`, `DB_PATH=./data/dashboard.sqlite`
-- [ ] T004 [P] Create Playwright configuration in `backend/playwright.config.js` with `testDir` pointing at `../frontend/tests/e2e` and a webServer that runs the app
+- [X] T001 Create the `backend/` and `frontend/` directory structure per plan.md (`backend/src/{db,middleware,routes,services,lib}`, `backend/tests/{contract,integration,unit}`, `backend/data/`, `frontend/{css,js/components,tests/e2e}`)
+- [X] T002 Initialize the backend Node.js project in `backend/package.json` (`"type": "module"`; dependencies `express`, `better-sqlite3`; devDependencies `supertest`, `@playwright/test`; scripts `start`, `dev`, `init-db`, `test`, `test:e2e`)
+- [X] T003 [P] Create `backend/.env.example` and `backend/.env` with `PORT=3000`, `SERVER_SECRET`, `DB_PATH=./data/dashboard.sqlite`
+- [X] T004 [P] Create Playwright configuration in `backend/playwright.config.js` with `testDir` pointing at `../frontend/tests/e2e` and a webServer that runs the app
 
 ---
 
@@ -46,29 +46,29 @@ these.
 
 ### Database & server
 
-- [ ] T005 Create the SQLite schema in `backend/src/db/schema.sql` (tables `children`, `sessions`, `day_stars`, `agenda_entries`, `wants` with constraints and indexes per data-model.md)
-- [ ] T006 [P] Implement the SQLite connection module in `backend/src/db/index.js` (better-sqlite3, reads `DB_PATH`, enables `PRAGMA foreign_keys = ON`)
-- [ ] T007 Implement the database init script in `backend/src/db/init-db.js` (create the `data/` directory, apply `schema.sql`) — wired to the `init-db` npm script
-- [ ] T008 [P] Implement the HMAC hashing helper in `backend/src/lib/hash.js` (hash access codes and recovery answers with `SERVER_SECRET`; normalize input — trim + lower-case)
-- [ ] T009 [P] Implement client-time helpers in `backend/src/lib/time.js` (`parseClientDateTime`, `isBlockElapsed`, `isStarLocked` at 21:30, `isCountedDay`)
-- [ ] T010 Create the Express app in `backend/src/app.js` (JSON body parsing, static serving of `frontend/`, mount the `/api` router) and the HTTP entry point in `backend/src/server.js`
-- [ ] T011 Implement the session-token auth middleware in `backend/src/middleware/auth.js` (validate `Authorization: Bearer` token against the `sessions` table → attach the child)
+- [X] T005 Create the SQLite schema in `backend/src/db/schema.sql` (tables `children`, `sessions`, `day_stars`, `agenda_entries`, `wants` with constraints and indexes per data-model.md)
+- [X] T006 [P] Implement the SQLite connection module in `backend/src/db/index.js` (better-sqlite3, reads `DB_PATH`, enables `PRAGMA foreign_keys = ON`)
+- [X] T007 Implement the database init script in `backend/src/db/init-db.js` (create the `data/` directory, apply `schema.sql`) — wired to the `init-db` npm script
+- [X] T008 [P] Implement the HMAC hashing helper in `backend/src/lib/hash.js` (hash access codes and recovery answers with `SERVER_SECRET`; normalize input — trim + lower-case)
+- [X] T009 [P] Implement client-time helpers in `backend/src/lib/time.js` (`parseClientDateTime`, `isBlockElapsed`, `isStarLocked` at 21:30, `isCountedDay`)
+- [X] T010 Create the Express app in `backend/src/app.js` (JSON body parsing, static serving of `frontend/`, mount the `/api` router) and the HTTP entry point in `backend/src/server.js`
+- [X] T011 Implement the session-token auth middleware in `backend/src/middleware/auth.js` (validate `Authorization: Bearer` token against the `sessions` table → attach the child)
 
 ### Identity (access code, sessions, recovery)
 
-- [ ] T012 [P] Contract tests for identity endpoints in `backend/tests/contract/identity.test.js` (`POST /api/children`, `POST /api/sessions`, `POST /api/recovery`, `GET/PATCH/DELETE /api/children/me`) — must fail before T013–T014
-- [ ] T013 Implement `childService` in `backend/src/services/childService.js` (create child, login by access code, recover via name + recovery answer, get/update profile, delete child)
-- [ ] T014 Implement identity routes in `backend/src/routes/children.js` (setup, profile `GET/PATCH/DELETE`, recovery) and `backend/src/routes/sessions.js` (login), mounted under `/api`
+- [X] T012 [P] Contract tests for identity endpoints in `backend/tests/contract/identity.test.js` (`POST /api/children`, `POST /api/sessions`, `POST /api/recovery`, `GET/PATCH/DELETE /api/children/me`) — must fail before T013–T014
+- [X] T013 Implement `childService` in `backend/src/services/childService.js` (create child, login by access code, recover via name + recovery answer, get/update profile, delete child)
+- [X] T014 Implement identity routes in `backend/src/routes/children.js` (setup, profile `GET/PATCH/DELETE`, recovery) and `backend/src/routes/sessions.js` (login), mounted under `/api`
 
 ### Frontend shell
 
-- [ ] T015 [P] Create the single-page HTML shell in `frontend/index.html` (auth-screen container plus six empty section containers)
-- [ ] T016 [P] Implement the ocean/princess theme and one-screen CSS Grid layout in `frontend/css/styles.css` (palette, fonts, cards, background decorations per `assets/theme-and-layout-reference.md`; only the agenda list scrolls internally)
-- [ ] T017 [P] Implement the API client in `frontend/js/api.js` (fetch wrapper, Bearer token from local storage, JSON handling, error-code mapping)
-- [ ] T018 [P] Implement the client-side state store in `frontend/js/state.js` (selected date, child profile, cached day/wallet/wants data)
-- [ ] T019 [P] Implement local-clock helpers in `frontend/js/time.js` (`today`, `isBlockElapsed`, `isStarLocked` at 21:30, `isCountedDay`, time-of-day phrase)
-- [ ] T020 Implement the auth UI component in `frontend/js/components/auth.js` (first-use setup, login, and recovery screens)
-- [ ] T021 Implement the app bootstrap in `frontend/js/app.js` (load saved session, auth gate via `auth.js`, render loop that mounts section components)
+- [X] T015 [P] Create the single-page HTML shell in `frontend/index.html` (auth-screen container plus six empty section containers)
+- [X] T016 [P] Implement the ocean/princess theme and one-screen CSS Grid layout in `frontend/css/styles.css` (palette, fonts, cards, background decorations per `assets/theme-and-layout-reference.md`; only the agenda list scrolls internally)
+- [X] T017 [P] Implement the API client in `frontend/js/api.js` (fetch wrapper, Bearer token from local storage, JSON handling, error-code mapping)
+- [X] T018 [P] Implement the client-side state store in `frontend/js/state.js` (selected date, child profile, cached day/wallet/wants data)
+- [X] T019 [P] Implement local-clock helpers in `frontend/js/time.js` (`today`, `isBlockElapsed`, `isStarLocked` at 21:30, `isCountedDay`, time-of-day phrase)
+- [X] T020 Implement the auth UI component in `frontend/js/components/auth.js` (first-use setup, login, and recovery screens)
+- [X] T021 Implement the app bootstrap in `frontend/js/app.js` (load saved session, auth gate via `auth.js`, render loop that mounts section components)
 
 **Checkpoint**: Foundation ready — the app runs, a child can be created/logged in, and the empty dashboard renders. User stories can now begin.
 
@@ -86,18 +86,18 @@ confirm the activity persists and elapsed hours are read-only.
 
 ### Tests for User Story 1 (write first — must fail before implementation) ⚠️
 
-- [ ] T022 [P] [US1] Contract tests for the day/agenda endpoints in `backend/tests/contract/days-agenda.test.js` (`GET /api/days/{date}`, `PUT /api/days/{date}/agenda/{hour}` including the `block_elapsed` rejection)
-- [ ] T023 [P] [US1] Integration test for the US1 flow in `backend/tests/integration/us1-agenda.test.js` (save activity, switch date, elapsed blocks read-only, persistence)
-- [ ] T024 [P] [US1] End-to-end test for US1 in `frontend/tests/e2e/us1-agenda.spec.js` (greeting + date, today highlighted, 4 visible blocks + scroll, save activity, elapsed block locked)
+- [X] T022 [P] [US1] Contract tests for the day/agenda endpoints in `backend/tests/contract/days-agenda.test.js` (`GET /api/days/{date}`, `PUT /api/days/{date}/agenda/{hour}` including the `block_elapsed` rejection)
+- [X] T023 [P] [US1] Integration test for the US1 flow in `backend/tests/integration/us1-agenda.test.js` (save activity, switch date, elapsed blocks read-only, persistence)
+- [X] T024 [P] [US1] End-to-end test for US1 in `frontend/tests/e2e/us1-agenda.spec.js` (greeting + date, today highlighted, 4 visible blocks + scroll, save activity, elapsed block locked)
 
 ### Implementation for User Story 1
 
-- [ ] T025 [US1] Implement `agendaService` in `backend/src/services/agendaService.js` (`getDay` returning star + 14 agenda blocks, `saveAgendaEntry` with elapsed-block validation)
-- [ ] T026 [US1] Implement the days route (agenda portion) in `backend/src/routes/days.js` (`GET /api/days/{date}`, `PUT /api/days/{date}/agenda/{hour}`)
-- [ ] T027 [P] [US1] Implement the greeting component in `frontend/js/components/greeting.js` (time-of-day phrase, child name, today's date)
-- [ ] T028 [P] [US1] Implement the calendar component in `frontend/js/components/calendar.js` (date selector, current day highlighted/selected by default, emits date-change events)
-- [ ] T029 [P] [US1] Implement the agenda component in `frontend/js/components/agenda.js` (14 one-hour blocks 07:00–21:00, 4 visible with internal scroll, edit/save upcoming blocks, elapsed blocks read-only and marked)
-- [ ] T030 [US1] Wire the greeting, calendar, and agenda components into the render loop in `frontend/js/app.js` (date-change updates the agenda only)
+- [X] T025 [US1] Implement `agendaService` in `backend/src/services/agendaService.js` (`getDay` returning star + 14 agenda blocks, `saveAgendaEntry` with elapsed-block validation)
+- [X] T026 [US1] Implement the days route (agenda portion) in `backend/src/routes/days.js` (`GET /api/days/{date}`, `PUT /api/days/{date}/agenda/{hour}`)
+- [X] T027 [P] [US1] Implement the greeting component in `frontend/js/components/greeting.js` (time-of-day phrase, child name, today's date)
+- [X] T028 [P] [US1] Implement the calendar component in `frontend/js/components/calendar.js` (date selector, current day highlighted/selected by default, emits date-change events)
+- [X] T029 [P] [US1] Implement the agenda component in `frontend/js/components/agenda.js` (14 one-hour blocks 07:00–21:00, 4 visible with internal scroll, edit/save upcoming blocks, elapsed blocks read-only and marked)
+- [X] T030 [US1] Wire the greeting, calendar, and agenda components into the render loop in `frontend/js/app.js` (date-change updates the agenda only)
 
 **Checkpoint**: User Story 1 is fully functional and independently testable — a usable daily planner.
 
