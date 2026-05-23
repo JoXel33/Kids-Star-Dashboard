@@ -13,8 +13,8 @@ node_modules/
 backend/data/
 
 # Playwright runtime artifacts
-backend/test-results/
-backend/playwright-report/
+test-results/
+playwright-report/
 playwright/.cache/
 
 # OS files
