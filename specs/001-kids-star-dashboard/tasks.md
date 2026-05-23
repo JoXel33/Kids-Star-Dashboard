@@ -169,6 +169,15 @@ removed, and confirm no 4th Want can be added.
 - [ ] T051 Run the `quickstart.md` smoke-test checklist end-to-end and fix any issues found
 - [ ] T052 [P] Update the repository `README.md` with setup, run, and test instructions
 
+### Children's data protection (Constitution Principle V follow-up)
+
+Addresses `/speckit-analyze` finding **C2**: the backend `DELETE /api/children/me` endpoint
+exists (T014), but no UI control wires it. Required by Principle V ("deletable on demand").
+
+- [ ] T053 [P] End-to-end test for "Delete my data" in `frontend/tests/e2e/data-deletion.spec.js` (open settings, confirm the dialog, verify `DELETE /api/children/me` is called, the local session is cleared, and the first-use setup screen is shown) — must fail before T054 / T055
+- [ ] T054 [P] Add the settings component in `frontend/js/components/settings.js` (a "Delete my data" control plus a confirmation dialog; on confirm, call `DELETE /api/children/me`, clear the local session, and return to the first-use setup)
+- [ ] T055 Wire the settings component into the render loop in `frontend/js/app.js`
+
 ---
 
 ## Dependencies & Execution Order
@@ -269,5 +278,5 @@ is independently testable and touches mostly separate files (coordinate on the s
 | Phase 3 — US1 (P1, MVP) | T022–T030 | 9 |
 | Phase 4 — US2 (P2) | T031–T040 | 10 |
 | Phase 5 — US3 (P3) | T041–T047 | 7 |
-| Phase 6 — Polish | T048–T052 | 5 |
-| **Total** | | **52** |
+| Phase 6 — Polish | T048–T055 | 8 |
+| **Total** | | **55** |
