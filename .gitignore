@@ -12,6 +12,11 @@ node_modules/
 # SQLite database files
 backend/data/
 
+# Playwright runtime artifacts
+backend/test-results/
+backend/playwright-report/
+playwright/.cache/
+
 # OS files
 .DS_Store
 Thumbs.db
