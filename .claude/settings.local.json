@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(& \"c:\\\\Users\\\\jiokm\\\\speckit_test\\\\DashWithClaude\\\\.specify\\\\scripts\\\\powershell\\\\setup-tasks.ps1\" -Json)"
+    ]
+  }
+}
