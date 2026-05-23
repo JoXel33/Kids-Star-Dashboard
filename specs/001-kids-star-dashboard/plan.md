@@ -34,20 +34,29 @@ and re-validates invariants on every mutating request.
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-The project constitution (`.specify/memory/constitution.md`) has **not been ratified** — it
-still contains unfilled template placeholders, so no formal principle gates are defined. This
-plan therefore has no constitution gate that can fail.
+Evaluated against the project constitution **v1.0.0** at
+`.specify/memory/constitution.md`.
 
-- An earlier (interrupted) `/speckit-constitution` session indicated **Test-First (TDD)** as
-  the intended non-negotiable principle. This plan adopts test-first practice accordingly:
-  contract and integration tests are authored before implementation during `/speckit-tasks`
-  and `/speckit-implement`.
-- **Recommendation**: run `/speckit-constitution` to ratify the constitution, then re-run this
-  Constitution Check if principles are added.
+- **I. Test-First Development (NON-NEGOTIABLE)** — **PASS**. `tasks.md` authors contract,
+  integration, and E2E tests for each user story before the corresponding implementation
+  tasks, and requires the tests to fail first.
+- **II. Specification-Driven Workflow** — **PASS**. This feature has `spec.md` (with 5
+  resolved clarifications), this plan, `tasks.md`, and design artefacts (`research.md`,
+  `data-model.md`, `contracts/`, `quickstart.md`).
+- **III. Simplicity & YAGNI** — **PASS**. Vanilla HTML/CSS/JS + minimal Express + SQLite is
+  the smallest viable stack; no premature abstractions. Complexity Tracking is empty.
+- **IV. Child-First User Experience** — **PASS**. Single-screen layout (FR-033),
+  child-friendly ocean/princess theme (FR-034), performance budgets encoded in Success
+  Criteria (date switch < 1 s, perceived < 200 ms).
+- **V. Children's Data Protection** — **PASS** with one follow-up. Backend implements
+  HMAC-hashed credentials, first-name-only PII, no third-party trackers, and the
+  `DELETE /api/children/me` endpoint (research.md §10, contracts/rest-api.md, task T014).
+  *Follow-up*: `/speckit-analyze` flagged C2 — no frontend control yet wires the deletion
+  endpoint; add a polish task before `/speckit-implement` closes.
 
-**Initial gate**: PASS (no gates defined).
-**Post-Design re-check**: PASS (design introduces no unjustified complexity — see Complexity
-Tracking).
+**Initial gate**: PASS.
+**Post-Design re-check**: PASS (no design change has invalidated the post-Phase-1 evaluation;
+the C2 gap is a frontend-UX surface to add, not a principle violation).
 
 ## Project Structure
 
