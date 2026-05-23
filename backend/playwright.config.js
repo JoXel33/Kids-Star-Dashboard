@@ -1,7 +1,7 @@
 import { defineConfig } from '@playwright/test';
 
 export default defineConfig({
-  testDir: '../frontend/tests/e2e',
+  testDir: './tests/e2e',
   fullyParallel: false,
   retries: 0,
   timeout: 30_000,
@@ -10,7 +10,7 @@ export default defineConfig({
     headless: true,
   },
   webServer: {
-    command: 'node --env-file=.env src/server.js',
+    command: 'node --experimental-sqlite src/server.js',
     url: 'http://localhost:3000',
     timeout: 30_000,
     reuseExistingServer: !process.env.CI,

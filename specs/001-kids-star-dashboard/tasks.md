@@ -88,7 +88,7 @@ confirm the activity persists and elapsed hours are read-only.
 
 - [X] T022 [P] [US1] Contract tests for the day/agenda endpoints in `backend/tests/contract/days-agenda.test.js` (`GET /api/days/{date}`, `PUT /api/days/{date}/agenda/{hour}` including the `block_elapsed` rejection)
 - [X] T023 [P] [US1] Integration test for the US1 flow in `backend/tests/integration/us1-agenda.test.js` (save activity, switch date, elapsed blocks read-only, persistence)
-- [X] T024 [P] [US1] End-to-end test for US1 in `frontend/tests/e2e/us1-agenda.spec.js` (greeting + date, today highlighted, 4 visible blocks + scroll, save activity, elapsed block locked)
+- [X] T024 [P] [US1] End-to-end test for US1 in `backend/tests/e2e/us1-agenda.spec.js` (greeting + date, today highlighted, 4 visible blocks + scroll, save activity, elapsed block locked)
 
 ### Implementation for User Story 1
 
