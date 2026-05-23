@@ -178,6 +178,16 @@ exists (T014), but no UI control wires it. Required by Principle V ("deletable o
 - [ ] T054 [P] Add the settings component in `frontend/js/components/settings.js` (a "Delete my data" control plus a confirmation dialog; on confirm, call `DELETE /api/children/me`, clear the local session, and return to the first-use setup)
 - [ ] T055 Wire the settings component into the render loop in `frontend/js/app.js`
 
+### Name editability (FR-003 follow-up)
+
+Addresses `/speckit-analyze` finding **C1**: FR-003 requires the child to be able to set AND
+change their name. First-use setup (T020) collects it and the greeting (T027) displays it,
+but no task provides an edit affordance. Backend `PATCH /api/children/me` already exists
+(T014).
+
+- [ ] T056 [P] End-to-end test for name editing in `frontend/tests/e2e/name-edit.spec.js` (logged-in user clicks the name in the greeting, edits it, saves, reloads, and the new name persists) — must fail before T057
+- [ ] T057 [P] Add an inline name-edit affordance to `frontend/js/components/greeting.js` (click/tap the name → input → save → call `PATCH /api/children/me` → update state and re-render the greeting)
+
 ---
 
 ## Dependencies & Execution Order
@@ -278,5 +288,5 @@ is independently testable and touches mostly separate files (coordinate on the s
 | Phase 3 — US1 (P1, MVP) | T022–T030 | 9 |
 | Phase 4 — US2 (P2) | T031–T040 | 10 |
 | Phase 5 — US3 (P3) | T041–T047 | 7 |
-| Phase 6 — Polish | T048–T055 | 8 |
-| **Total** | | **55** |
+| Phase 6 — Polish | T048–T057 | 10 |
+| **Total** | | **57** |
