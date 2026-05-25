@@ -71,9 +71,9 @@ export function mountRewards(container) {
             <div class="reward-desc">${escapeHtml(w.description)}</div>
             <div class="reward-cost" aria-label="Cost ${w.cost} stars">${'⭐'.repeat(w.cost)}${'☆'.repeat(5 - w.cost)}</div>
             <div class="reward-actions">
-              ${wallet.starBalance >= w.cost
-                ? `<button class="redeem-btn" data-action="redeem">Redeem</button>`
-                : `<span class="cant-afford" title="Not enough stars yet">—</span>`}
+              <button class="redeem-btn" data-action="redeem"
+                ${wallet.starBalance >= w.cost ? '' : 'disabled'}
+                title="${wallet.starBalance >= w.cost ? 'Spend your stars on this' : 'Not enough stars yet — keep earning!'}">Redeem</button>
               <button class="remove-btn" data-action="remove" aria-label="Remove">✖</button>
             </div>
           </div>

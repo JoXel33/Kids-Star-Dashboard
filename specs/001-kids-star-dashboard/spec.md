@@ -15,6 +15,10 @@
 - Q: On the current day, is the in-progress hour block editable? → A: Yes — a block becomes elapsed (read-only) only once the clock passes its end time, so the in-progress hour stays editable.
 - Q: What happens if the child forgets their access code? → A: Recovery via a memorable question set at first use; the question is "What is the name of your school?".
 
+### Session 2026-05-25
+
+- Q: When the child cannot yet afford a Want, should the redeem control be hidden or disabled? → A: Amendment to FR-028 — the redeem button is shown at all times next to each Want; it is disabled (with a tooltip explaining why) when the balance is insufficient and enabled when affordable. The underlying rule (redeem only when balance ≥ cost) is unchanged and still enforced by the backend.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Plan and journal the daily agenda (Priority: P1)
@@ -112,7 +116,8 @@ removed; confirm no 4th Want can be added.
    redeems it, **Then** the Want is removed, Stars Spent increases by the Want's cost, and Star
    Balance decreases by the same amount.
 4. **Given** a Want whose cost is greater than the Star Balance, **When** the child views that
-   Want, **Then** no redeem option is available for it.
+   Want, **Then** the redeem control for that Want is shown but disabled, with a tooltip
+   explaining why.
 5. **Given** a Want that has not been redeemed, **When** the child removes it, **Then** it
    disappears from the list and Stars Spent is unchanged.
 6. **Given** a date other than today is selected, **When** the child views the rewards section,
@@ -133,8 +138,9 @@ removed; confirm no 4th Want can be added.
   agenda is empty, the star shows "No Star", and both are read-only.
 - What happens when the child navigates far into the future? The agenda is empty and fully
   editable; the star shows "No Star" and is read-only (only today's star is editable).
-- What happens when the child tries to redeem a Want they cannot afford? No redeem option is
-  presented for that Want.
+- What happens when the child tries to redeem a Want they cannot afford? The redeem button is
+  shown for that Want but is disabled, preventing the action; a tooltip explains it is too
+  expensive. The backend additionally rejects any attempt with `insufficient_balance`.
 - What happens when a Want's cost is higher than the balance at creation time? The Want can
   still be added and kept; it simply remains non-redeemable until the balance is sufficient.
 - What happens on first ever use (no saved data)? Stars Collected and Stars Spent are 0, the
@@ -220,8 +226,9 @@ removed; confirm no 4th Want can be added.
 - **FR-026**: System MUST allow adding a new Want only when fewer than 3 Wants exist.
 - **FR-027**: System MUST allow the child to remove any Want that has not been redeemed.
 - **FR-028**: System MUST allow a Want to be redeemed only when the Star Balance is greater
-  than or equal to that Want's cost; when the balance is insufficient, no redeem option MUST be
-  presented for that Want.
+  than or equal to that Want's cost. The redeem control MUST be displayed at all times next to
+  each Want — enabled when affordable, and disabled (with a tooltip explaining why) when not.
+  The backend MUST additionally reject any redeem attempt where the balance is insufficient.
 - **FR-029**: When a Want is redeemed, the system MUST remove it from the list, increase Stars
   Spent by the Want's cost, and recalculate Star Balance.
 - **FR-030**: The Rewards list MUST reflect real-time state and MUST NOT change based on the

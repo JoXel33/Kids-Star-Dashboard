@@ -24,8 +24,9 @@ test('US3 — add a reward, remove it; redeem button hidden when unaffordable', 
   await expect(row).toBeVisible();
   await expect(row.locator('.reward-cost')).toContainText('⭐⭐⭐');
 
-  // Can't afford it yet (balance = 0) — redeem button is absent
-  await expect(row.locator('.redeem-btn')).toHaveCount(0);
+  // Can't afford it yet (balance = 0) — redeem button is shown but disabled (FR-028 amended)
+  await expect(row.locator('.redeem-btn')).toBeVisible();
+  await expect(row.locator('.redeem-btn')).toBeDisabled();
 
   // Remove it (confirmation auto-accepted via dialog handler)
   page.on('dialog', (d) => d.accept());
