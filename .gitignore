@@ -6,6 +6,9 @@
 # Node.js
 node_modules/
 
+# Claude Code local settings (user/machine-specific — shared settings.json is tracked)
+.claude/settings.local.json
+
 # Environment / secrets
 .env
 
