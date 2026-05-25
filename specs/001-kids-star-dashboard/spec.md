@@ -308,7 +308,7 @@ The dashboard uses a two-column layout that fits within one standard browser pag
 - **Top band**: a wide "Welcome, <child name>" greeting panel on the left; a "Today's Date"
   panel on the right.
 - **Left column** (wider): the **Agenda** panel (showing 4 hour rows at a time, each row with
-  a time label, an activity area, and an edit affordance(clicking or tapping the activity area opens an inline additor)), with the **Your Rewards** panel
+  a time label, an activity area, and an edit affordance (clicking or tapping the activity area opens an inline editor), with the **Your Rewards** panel
   below it (each Want shown with its description, a 1–5 star cost rating, and a remove control;
   plus an add control when fewer than 3 Wants exist).
 - **Right column** (narrower): the **Today's Star** panel (a large star the child can toggle),
