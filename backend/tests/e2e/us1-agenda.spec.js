@@ -20,9 +20,9 @@ test('US1 — first-use setup, greeting/calendar/agenda render, save an activity
   // Agenda renders all 14 blocks
   await expect(page.locator('.agenda-row')).toHaveCount(14);
 
-  // Save an activity on the first non-elapsed block
-  const firstUpcomingEdit = page.locator('.agenda-row:not(.elapsed) .edit-btn').first();
-  await firstUpcomingEdit.click();
+  // Save an activity on the first non-elapsed block — clicking the activity area opens the inline editor
+  const firstUpcoming = page.locator('.agenda-row:not(.elapsed) .activity-clickable').first();
+  await firstUpcoming.click();
   await page.locator('.agenda-row input[type="text"]').fill('Reading time');
   await page.locator('.agenda-row .save-btn').click();
 

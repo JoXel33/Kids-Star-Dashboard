@@ -94,14 +94,27 @@ body {
   width: 100%; border: 2px solid #c8a8ff; background: rgba(255,255,255,0.85);
   border-radius: 10px; padding: 6px 8px; font: inherit; outline: none;
 }
-.agenda-row .edit-btn, .agenda-row .save-btn {
+.agenda-row .save-btn {
   border: none; border-radius: 12px; padding: 6px 10px;
   font-family: 'Fredoka One', cursive; font-size: 12px; cursor: pointer;
   color: white;
+  background: linear-gradient(135deg, #80d0a0, #50b080);
 }
-.agenda-row .edit-btn { background: linear-gradient(135deg, #ff9dc6, #c8a8ff); }
-.agenda-row .save-btn { background: linear-gradient(135deg, #80d0a0, #50b080); }
-.agenda-row.elapsed .edit-btn, .agenda-row.elapsed .save-btn { display: none; }
+.agenda-row.elapsed .save-btn { display: none; }
+
+.agenda-row .activity-clickable {
+  grid-column: 2 / -1;
+  background: none; border: none; padding: 6px 8px; margin: 0;
+  text-align: left; font: inherit; font-size: 14px; cursor: pointer; color: inherit;
+  border-radius: 8px;
+  transition: background 0.15s;
+}
+.agenda-row .activity-clickable:hover {
+  background: rgba(255, 255, 255, 0.65);
+}
+.agenda-row .activity-clickable em {
+  color: #a0a0b0; font-style: italic;
+}
 .elapsed-tag {
   font-size: 11px; color: #b070b0; font-weight: 700; text-transform: uppercase;
   text-align: right;

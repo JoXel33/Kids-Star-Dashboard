@@ -49,9 +49,8 @@ export function mountAgenda(container) {
       } else {
         row.innerHTML = `
           <span class="time">${timeLabel}</span>
-          <span class="activity">${activity ? escapeHtml(activity) : '<em style="color:#a0a0b0">(tap edit to add)</em>'}</span>
-          <button class="edit-btn">Edit</button>`;
-        row.querySelector('.edit-btn').addEventListener('click', () => { editingHour = h; render(); });
+          <button class="activity activity-clickable" type="button" aria-label="Edit activity for ${timeLabel}">${activity ? escapeHtml(activity) : '<em>(tap to add)</em>'}</button>`;
+        row.querySelector('.activity-clickable').addEventListener('click', () => { editingHour = h; render(); });
       }
       list.appendChild(row);
     }
