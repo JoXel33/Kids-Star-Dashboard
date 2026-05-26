@@ -23,3 +23,11 @@ playwright/.cache/
 # OS files
 .DS_Store
 Thumbs.db
+
+# User input artifacts (original notes / mocks / reference html — not source).
+# The theme + layout they describe are captured in styles.css and
+# specs/001-kids-star-dashboard/assets/theme-and-layout-reference.md.
+/test spec.docx
+/princess_ocean_dashboard.html
+/mock.jpg
+/DESIGN_SPEC.md
