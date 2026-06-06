@@ -21,8 +21,8 @@ and re-validates invariants on every mutating request.
 ## Technical Context
 
 **Language/Version**: JavaScript — ES2022 modules. Node.js 22 LTS (backend; minimum 22.5 for `node:sqlite`); modern evergreen browsers (frontend).
-**Primary Dependencies**: Backend — Express 4, better-sqlite3. Frontend — none (vanilla DOM + Fetch API); Fredoka One + Nunito web fonts.
-**Storage**: SQLite (single file) via better-sqlite3.
+**Primary Dependencies**: Backend — Express 4; SQLite via the built-in `node:sqlite` module (see research.md §1 for the switch away from `better-sqlite3`). Frontend — none (vanilla DOM + Fetch API); Fredoka One + Nunito web fonts.
+**Storage**: SQLite (single file) via Node's built-in `node:sqlite` module.
 **Testing**: Backend — Node built-in `node:test` + Supertest for contract/integration tests. Frontend — Playwright for end-to-end browser tests.
 **Target Platform**: Desktop browsers (Chrome, Edge, Firefox, Safari) on a standard laptop screen (≥1366×768); backend on Node.js 22+ (local or small host).
 **Project Type**: Web application (separate frontend + backend folders, served by one Node process).
@@ -85,7 +85,7 @@ backend/
 │   ├── server.js            # Process entry: start HTTP server
 │   ├── app.js               # Express app: static frontend + /api routes
 │   ├── db/
-│   │   ├── index.js         # SQLite connection (better-sqlite3)
+│   │   ├── index.js         # SQLite connection (node:sqlite)
 │   │   └── schema.sql       # Table definitions
 │   ├── middleware/
 │   │   └── auth.js          # Validate session token → attach child

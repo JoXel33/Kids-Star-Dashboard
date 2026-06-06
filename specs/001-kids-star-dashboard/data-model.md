@@ -1,6 +1,6 @@
 # Phase 1 Data Model: Kids Star Dashboard
 
-Storage: SQLite (single file) via `better-sqlite3`. All dates are stored as `TEXT` in
+Storage: SQLite (single file) via Node's built-in `node:sqlite` module. All dates are stored as `TEXT` in
 `YYYY-MM-DD` format; all timestamps as ISO-8601 `TEXT`. Booleans are stored as `INTEGER`
 (`0`/`1`).
 
