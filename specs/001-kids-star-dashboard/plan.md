@@ -20,11 +20,11 @@ and re-validates invariants on every mutating request.
 
 ## Technical Context
 
-**Language/Version**: JavaScript — ES2022 modules. Node.js 20 LTS (backend); modern evergreen browsers (frontend).
+**Language/Version**: JavaScript — ES2022 modules. Node.js 22 LTS (backend; minimum 22.5 for `node:sqlite`); modern evergreen browsers (frontend).
 **Primary Dependencies**: Backend — Express 4, better-sqlite3. Frontend — none (vanilla DOM + Fetch API); Fredoka One + Nunito web fonts.
 **Storage**: SQLite (single file) via better-sqlite3.
 **Testing**: Backend — Node built-in `node:test` + Supertest for contract/integration tests. Frontend — Playwright for end-to-end browser tests.
-**Target Platform**: Desktop browsers (Chrome, Edge, Firefox, Safari) on a standard laptop screen (≥1366×768); backend on Node.js 20 (local or small host).
+**Target Platform**: Desktop browsers (Chrome, Edge, Firefox, Safari) on a standard laptop screen (≥1366×768); backend on Node.js 22+ (local or small host).
 **Project Type**: Web application (separate frontend + backend folders, served by one Node process).
 **Performance Goals**: Calendar date switch updates the agenda within 1 s; all interactions feel instant (<200 ms perceived). Data volumes are tiny (one child ≈ 14 agenda rows/day, ≤3 wants).
 **Constraints**: All six sections fit one screen with no full-page scroll (only the agenda hour list scrolls internally); target ≥1366×768. Network required for cross-device sync. The child's local clock is authoritative for all time logic.

@@ -4,7 +4,7 @@ How to set up, run, and test the dashboard during development.
 
 ## Prerequisites
 
-- **Node.js 20 LTS** or newer (`node --version`)
+- **Node.js 22 LTS** or newer (`node --version`) — required for the built-in `node:sqlite` module
 - A modern desktop browser (Chrome, Edge, Firefox, or Safari)
 - Git (the repository is already initialised)
 
