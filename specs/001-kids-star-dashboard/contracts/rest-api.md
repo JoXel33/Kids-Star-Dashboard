@@ -65,6 +65,14 @@ Create a new child. Request:
 - `200` → `{ "sessionToken": "<token>", "child": Child }`
 - `401` `invalid_access_code`
 
+### DELETE /api/sessions — logout (auth required)
+
+Deletes the current session token so it can no longer be used. Other live sessions for the
+same child (e.g. a second device) are unaffected.
+
+- `204` No Content
+- `401` `unauthorized` — missing or already-invalid token
+
 ### POST /api/recovery — recover a forgotten access code
 
 The recovery question is fixed: *"What is the name of your school?"*
@@ -199,7 +207,7 @@ Runs as a single transaction: validate balance → delete the want → increment
 
 | Endpoint(s) | Requirements |
 |-------------|--------------|
-| POST /children, POST /sessions, POST /recovery | FR-031, FR-032 |
+| POST /children, POST /sessions, DELETE /sessions, POST /recovery | FR-031, FR-032 |
 | GET/PATCH/DELETE /children/me | FR-002, FR-003, FR-031, data-protection (research §10) |
 | GET /days/{date} | FR-007, FR-014, FR-015, FR-018 |
 | PUT /days/{date}/agenda/{hour} | FR-008–FR-013 |

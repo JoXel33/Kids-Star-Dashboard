@@ -116,6 +116,11 @@ export function createChildService(db, hash) {
       stmts.deleteChild.run(childId);
     },
 
+    logout(token) {
+      if (!token) return;
+      stmts.deleteSession.run(token);
+    },
+
     validateSession(token) {
       if (!token) return null;
       const row = stmts.findSession.get(token);

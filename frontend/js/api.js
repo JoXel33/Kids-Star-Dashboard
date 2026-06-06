@@ -36,6 +36,7 @@ export const api = {
   me: () => request('GET', '/api/children/me'),
   updateName: (name) => request('PATCH', '/api/children/me', { name }),
   deleteMe: () => request('DELETE', '/api/children/me'),
+  logout: () => request('DELETE', '/api/sessions'),
 
   // Days / agenda (US1)
   getDay: (date) => request('GET', `/api/days/${date}`),

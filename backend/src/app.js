@@ -35,7 +35,7 @@ export function createApp(db, options = {}) {
   const authMiddleware = createAuthMiddleware(childService);
 
   app.use('/api/children', createChildrenRouter({ childService, authMiddleware }));
-  app.use('/api/sessions', createSessionsRouter({ childService }));
+  app.use('/api/sessions', createSessionsRouter({ childService, authMiddleware }));
   app.use('/api/recovery', createRecoveryRouter({ childService }));
   app.use('/api/days', createDaysRouter({ agendaService, starService, authMiddleware }));
   app.use('/api/wallet', createWalletRouter({ walletService, authMiddleware }));

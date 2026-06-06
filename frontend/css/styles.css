@@ -48,7 +48,22 @@ body {
   color: white;
   border: 3px solid rgba(255,255,255,0.7);
   box-shadow: 0 8px 28px rgba(200,120,200,0.22);
-  display: flex; align-items: center; min-height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+  min-height: 64px; gap: 10px;
+}
+.greeting-card .logout-btn {
+  background: rgba(255,255,255,0.25);
+  border: 2px solid rgba(255,255,255,0.55);
+  border-radius: 14px;
+  width: 44px; height: 40px;
+  font-size: 22px; line-height: 1; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.15s, transform 0.15s;
+}
+.greeting-card .logout-btn:hover {
+  background: rgba(255,255,255,0.45);
+  transform: translateX(2px);
 }
 .greeting-card .hello {
   font-family: 'Fredoka One', cursive;
