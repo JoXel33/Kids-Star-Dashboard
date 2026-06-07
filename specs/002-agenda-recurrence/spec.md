@@ -182,8 +182,8 @@ kid-friendly message. Then enter a valid date and confirm acceptance.
 **Affordance & gating**
 
 - **FR-001**: The system MUST display a **Repeat** affordance on each agenda block that
-  has an activity and is not elapsed. The affordance MUST use the recurrence icon shown
-  in mock2.jpg.
+  has an activity and is not elapsed. The affordance MUST use the recurrence icon (↻)
+  described in [assets/recurrence-affordance.md](assets/recurrence-affordance.md).
 - **FR-002**: The **Repeat** affordance MUST NOT be available on empty agenda blocks or
   on blocks whose hour has elapsed on a past or current date.
 - **FR-003**: Activating **Repeat** MUST present two input fields labelled

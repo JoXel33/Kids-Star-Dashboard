@@ -27,7 +27,11 @@ Thumbs.db
 # User input artifacts (original notes / mocks / reference html — not source).
 # The theme + layout they describe are captured in styles.css and
 # specs/001-kids-star-dashboard/assets/theme-and-layout-reference.md.
+# For per-feature mocks, the salient details belong in a markdown file under
+# specs/<feature>/assets/ (see 002 for an example).
 /test spec.docx
 /princess_ocean_dashboard.html
 /mock.jpg
+/mock2.jpg
 /DESIGN_SPEC.md
+/design.ppt.pptm
