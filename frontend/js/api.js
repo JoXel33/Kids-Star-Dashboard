@@ -48,6 +48,10 @@ export const api = {
   getWallet: (clientDate, clientTime) =>
     request('GET', `/api/wallet?clientDate=${encodeURIComponent(clientDate)}&clientTime=${encodeURIComponent(clientTime)}`),
 
+  // Recurrence (feature 002)
+  applyRecurrence: (date, hour, body) =>
+    request('POST', `/api/days/${date}/agenda/${hour}/recurrence`, body),
+
   // Wants / rewards (US3)
   listWants: () => request('GET', '/api/wants'),
   addWant: (description, cost) => request('POST', '/api/wants', { description, cost }),

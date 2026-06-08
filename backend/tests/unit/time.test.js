@@ -4,6 +4,7 @@ import {
   isValidDate, isValidTime, isValidHour,
   isBlockElapsed, isCountedDay, canToggleStar,
   STAR_LOCK_HHMM,
+  addDays, enumerateDailyDates, enumerateMatchingWeekdays, capUntil,
 } from '../../src/lib/time.js';
 
 describe('validators', () => {
@@ -85,4 +86,99 @@ describe('canToggleStar', () => {
 
 test('STAR_LOCK_HHMM constant is 21:30', () => {
   assert.equal(STAR_LOCK_HHMM, '21:30');
+});
+
+// ── Feature 002 (Recurring agenda items) ─────────────────────────────────────
+
+describe('addDays', () => {
+  test('positive offset within a month', () => {
+    assert.equal(addDays('2026-06-07', 1), '2026-06-08');
+    assert.equal(addDays('2026-06-07', 3), '2026-06-10');
+  });
+  test('zero offset returns the same date', () => {
+    assert.equal(addDays('2026-06-07', 0), '2026-06-07');
+  });
+  test('crosses a month boundary', () => {
+    assert.equal(addDays('2026-06-30', 1), '2026-07-01');
+    assert.equal(addDays('2026-01-31', 1), '2026-02-01');
+  });
+  test('crosses a year boundary', () => {
+    assert.equal(addDays('2026-12-31', 1), '2027-01-01');
+  });
+  test('handles a leap-year February (2028)', () => {
+    assert.equal(addDays('2028-02-28', 1), '2028-02-29');
+    assert.equal(addDays('2028-02-29', 1), '2028-03-01');
+  });
+  test('handles a non-leap-year February (2026)', () => {
+    assert.equal(addDays('2026-02-28', 1), '2026-03-01');
+  });
+  test('large offsets within a year (90 days)', () => {
+    assert.equal(addDays('2026-06-07', 90), '2026-09-05');
+  });
+});
+
+describe('enumerateDailyDates', () => {
+  test('produces (source, until] inclusive of until', () => {
+    assert.deepEqual(
+      enumerateDailyDates('2026-06-07', '2026-06-10'),
+      ['2026-06-08', '2026-06-09', '2026-06-10'],
+    );
+  });
+  test('one-day range', () => {
+    assert.deepEqual(
+      enumerateDailyDates('2026-06-07', '2026-06-08'),
+      ['2026-06-08'],
+    );
+  });
+  test('until equals source returns empty array', () => {
+    assert.deepEqual(enumerateDailyDates('2026-06-07', '2026-06-07'), []);
+  });
+  test('crosses a month boundary', () => {
+    assert.deepEqual(
+      enumerateDailyDates('2026-06-29', '2026-07-02'),
+      ['2026-06-30', '2026-07-01', '2026-07-02'],
+    );
+  });
+});
+
+describe('enumerateMatchingWeekdays', () => {
+  // 2026-06-07 is a Sunday (per spec US1 AC1).
+  test('Sunday source → following 3 Sundays through inclusive until', () => {
+    assert.deepEqual(
+      enumerateMatchingWeekdays('2026-06-07', '2026-06-28'),
+      ['2026-06-14', '2026-06-21', '2026-06-28'],
+    );
+  });
+  test('one matching weekday when until lands exactly on it', () => {
+    assert.deepEqual(
+      enumerateMatchingWeekdays('2026-06-07', '2026-06-14'),
+      ['2026-06-14'],
+    );
+  });
+  test('zero output when until is before next matching weekday (NOT an error)', () => {
+    assert.deepEqual(enumerateMatchingWeekdays('2026-06-07', '2026-06-13'), []);
+  });
+  test('until equals source returns empty array', () => {
+    assert.deepEqual(enumerateMatchingWeekdays('2026-06-07', '2026-06-07'), []);
+  });
+  test('crosses a month boundary', () => {
+    // 2026-06-30 is a Tuesday; matching weekdays through 2026-07-21 → Jul 7, 14, 21.
+    assert.deepEqual(
+      enumerateMatchingWeekdays('2026-06-30', '2026-07-21'),
+      ['2026-07-07', '2026-07-14', '2026-07-21'],
+    );
+  });
+});
+
+describe('capUntil', () => {
+  test('default 90-day cap', () => {
+    assert.equal(capUntil('2026-06-07'), '2026-09-05');
+  });
+  test('explicit days parameter', () => {
+    assert.equal(capUntil('2026-06-07', 7), '2026-06-14');
+    assert.equal(capUntil('2026-06-07', 30), '2026-07-07');
+  });
+  test('crosses a year boundary', () => {
+    assert.equal(capUntil('2026-12-15', 90), '2027-03-15');
+  });
 });

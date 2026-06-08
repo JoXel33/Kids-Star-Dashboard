@@ -3,11 +3,13 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { createHash } from './lib/hash.js';
+import * as timeLib from './lib/time.js';
 import { createChildService } from './services/childService.js';
 import { createAgendaService } from './services/agendaService.js';
 import { createStarService } from './services/starService.js';
 import { createWalletService } from './services/walletService.js';
 import { createWantService } from './services/wantService.js';
+import { createRecurrenceService } from './services/recurrenceService.js';
 import { createAuthMiddleware } from './middleware/auth.js';
 import { createChildrenRouter } from './routes/children.js';
 import { createSessionsRouter } from './routes/sessions.js';
@@ -32,12 +34,16 @@ export function createApp(db, options = {}) {
   const starService = createStarService(db);
   const walletService = createWalletService(db);
   const wantService = createWantService(db, walletService);
+  // Allow tests to inject a stubbed recurrenceService (e.g., for the 500/internal
+  // contract case). No production caller passes this; the default factory runs.
+  const recurrenceService = options.recurrenceServiceOverride
+    || createRecurrenceService(db, timeLib);
   const authMiddleware = createAuthMiddleware(childService);
 
   app.use('/api/children', createChildrenRouter({ childService, authMiddleware }));
   app.use('/api/sessions', createSessionsRouter({ childService, authMiddleware }));
   app.use('/api/recovery', createRecoveryRouter({ childService }));
-  app.use('/api/days', createDaysRouter({ agendaService, starService, authMiddleware }));
+  app.use('/api/days', createDaysRouter({ agendaService, starService, recurrenceService, authMiddleware }));
   app.use('/api/wallet', createWalletRouter({ walletService, authMiddleware }));
   app.use('/api/wants', createWantsRouter({ wantService, authMiddleware }));
 
@@ -68,9 +74,15 @@ function statusFor(code) {
     case 'block_elapsed':
     case 'insufficient_balance':
     case 'want_limit_reached':
+    case 'source_empty':
+    case 'source_elapsed':
+    case 'invalid_until_date':
+    case 'until_not_future':
+    case 'until_too_far':
       return 422;
     case 'want_not_found':
     case 'not_found':
+    case 'source_not_found':
       return 404;
     case 'invalid_input':
       return 400;

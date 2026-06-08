@@ -281,6 +281,92 @@ body {
   color: white; border-color: transparent;
 }
 
+/* Recurrence — affordance (↻ icon), popover, and wand spinner */
+/* When the row has activity and is not elapsed, constrain the clickable
+   activity area to column 2 so the ↻ icon fits in column 3. */
+.agenda-row .activity-clickable.with-recurrence { grid-column: 2; }
+.recurrence-btn {
+  background: none; border: none; cursor: pointer;
+  color: #8040c0; font-size: 18px; line-height: 1;
+  padding: 4px 6px;
+  transition: transform 0.15s;
+}
+.recurrence-btn:hover { transform: rotate(45deg); }
+.recurrence-btn:focus-visible { outline: 2px solid #8040c0; outline-offset: 2px; border-radius: 8px; }
+
+.repeat-popover-scrim {
+  position: fixed; inset: 0; background: rgba(60,40,90,0.35);
+  z-index: 250;
+}
+.repeat-popover {
+  position: fixed; z-index: 260;
+  width: 320px; max-width: 92vw;
+  background: white; border-radius: 18px; padding: 18px;
+  border: 3px solid rgba(255,255,255,0.95);
+  box-shadow: 0 16px 50px rgba(180,140,220,0.45);
+}
+.repeat-popover h2 {
+  font-family: 'Fredoka One', cursive; color: #8040c0;
+  font-size: 20px; margin-bottom: 12px;
+}
+.repeat-popover fieldset {
+  border: 2px solid rgba(200,168,255,0.5); border-radius: 14px;
+  padding: 8px 12px; margin-bottom: 12px;
+}
+.repeat-popover legend {
+  font-weight: 800; color: #604080; padding: 0 6px; font-size: 13px;
+}
+.repeat-popover label { display: block; margin: 6px 0; color: #604080; font-size: 14px; }
+.repeat-popover input[type="radio"] { margin-right: 8px; }
+.repeat-popover label[for="repeat-until"] {
+  font-weight: 800; color: #604080; margin: 8px 0 4px; font-size: 13px;
+}
+.repeat-popover input[type="date"] {
+  width: 100%; padding: 8px 10px; font: inherit; font-size: 14px;
+  border: 2px solid #d0a0e0; border-radius: 12px; outline: none; color: #2a2240;
+}
+.repeat-popover .hint { color: #8060a0; font-size: 12px; margin-top: 4px; }
+.repeat-popover .repeat-error {
+  color: #c04060; font-weight: 700; font-size: 13px; margin: 8px 0 0; min-height: 18px;
+}
+.repeat-popover-actions {
+  display: flex; justify-content: flex-end; gap: 8px; margin-top: 14px;
+}
+.repeat-popover-actions button {
+  border: 2px solid #c8a8ff; background: white; border-radius: 12px;
+  padding: 8px 14px; font: inherit; font-weight: 700; color: #6040a0; cursor: pointer;
+}
+.repeat-popover-actions button.primary {
+  background: linear-gradient(135deg, #ff9dc6, #c8a8ff);
+  color: white; border-color: transparent;
+}
+.repeat-popover-actions button[disabled] { opacity: 0.55; cursor: not-allowed; }
+
+@keyframes wand-rotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes wand-sparkle {
+  0%, 100% { opacity: 0.4; }
+  50%      { opacity: 1; }
+}
+.repeat-spinner {
+  display: flex; align-items: center; justify-content: center;
+  gap: 10px; padding: 8px 0;
+}
+.repeat-spinner .wand {
+  display: inline-block; font-size: 28px; line-height: 1;
+  animation: wand-rotate 1.4s linear infinite;
+}
+.repeat-spinner .sparkle {
+  display: inline-block; font-size: 18px; line-height: 1;
+  animation: wand-sparkle 1.4s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .repeat-spinner .wand,
+  .repeat-spinner .sparkle { animation: none; }
+}
+
 /* Auth screen */
 #auth-screen { align-items: center; justify-content: center; }
 #auth-screen .auth-card {
