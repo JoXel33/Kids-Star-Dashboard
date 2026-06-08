@@ -173,6 +173,19 @@ describe('POST /api/days/:date/agenda/:hour/recurrence', () => {
     assert.equal(res.body.error.code, 'until_too_far');
   });
 
+  test('200 happy path (Weekly) — 21-day Until from Sunday → 3 Sundays', async () => {
+    const { app } = makeApp();
+    // 2026-06-07 is a Sunday (per spec US1 AC1).
+    const token = await setupChildWithSource(app, { activity: 'Family lunch' });
+    const res = await request(app)
+      .post(`/api/days/${today}/agenda/14/recurrence`)
+      .set('Authorization', `Bearer ${token}`)
+      .send({ type: 'weekly', until: '2026-06-28', clientDate: today, clientTime: noon });
+    assert.equal(res.status, 200);
+    assert.equal(res.body.created, 3);
+    assert.deepEqual(res.body.dates, ['2026-06-14', '2026-06-21', '2026-06-28']);
+  });
+
   test('500 internal when the service throws an unmapped error (stubbed)', async () => {
     const stub = {
       applyRecurrence() {

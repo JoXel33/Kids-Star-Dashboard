@@ -169,6 +169,70 @@ describe('US1 — Apply a daily recurrence (integration)', () => {
     }
   });
 
+  test('US2 — Weekly happy path: source Sunday + 21-day Until → only Sundays populated', async () => {
+    const { app } = makeApp();
+    const token = await setupChildWithSource(app, { activity: 'Family lunch' });
+    const res = await request(app)
+      .post(`/api/days/${today}/agenda/14/recurrence`)
+      .set('Authorization', `Bearer ${token}`)
+      .send({ type: 'weekly', until: '2026-06-28', clientDate: today, clientTime: noon });
+    assert.equal(res.status, 200);
+    assert.equal(res.body.created, 3);
+
+    // Each Sunday in range has the activity.
+    for (const d of ['2026-06-14', '2026-06-21', '2026-06-28']) {
+      const day = await get(app, token, d);
+      assert.equal(day.body.day.agenda.find((e) => e.hour === 14).activity, 'Family lunch');
+    }
+    // Intervening weekdays (Mon–Sat) are untouched.
+    for (const d of ['2026-06-15', '2026-06-18', '2026-06-20', '2026-06-25', '2026-06-27']) {
+      const day = await get(app, token, d);
+      assert.equal(day.body.day.agenda.find((e) => e.hour === 14).activity, '');
+    }
+  });
+
+  test('US2 — Weekly with no matching weekday in range → zero entries, NOT an error', async () => {
+    const { app } = makeApp();
+    const token = await setupChildWithSource(app, { activity: 'Family lunch' });
+    // Source Sunday 2026-06-07, Until 2026-06-13 (next Sunday is 2026-06-14, out of range).
+    const res = await request(app)
+      .post(`/api/days/${today}/agenda/14/recurrence`)
+      .set('Authorization', `Bearer ${token}`)
+      .send({ type: 'weekly', until: '2026-06-13', clientDate: today, clientTime: noon });
+    assert.equal(res.status, 200);
+    assert.equal(res.body.created, 0);
+    assert.deepEqual(res.body.dates, []);
+  });
+
+  test('US2 — Weekly + Daily sequence on the same source produces independent copies', async () => {
+    const { app } = makeApp();
+    const token = await setupChildWithSource(app, { activity: 'Activity A' });
+    // First apply Daily through 2026-06-10.
+    await request(app)
+      .post(`/api/days/${today}/agenda/14/recurrence`)
+      .set('Authorization', `Bearer ${token}`)
+      .send({ type: 'daily', until: '2026-06-10', clientDate: today, clientTime: noon });
+    // Update source to Activity B and apply Weekly through 2026-06-28.
+    await request(app).put(`/api/days/${today}/agenda/14`)
+      .set('Authorization', `Bearer ${token}`)
+      .send({ activity: 'Activity B', clientDate: today, clientTime: noon });
+    await request(app)
+      .post(`/api/days/${today}/agenda/14/recurrence`)
+      .set('Authorization', `Bearer ${token}`)
+      .send({ type: 'weekly', until: '2026-06-28', clientDate: today, clientTime: noon });
+
+    // Daily copies that aren't matching Sundays: Activity A (unchanged by Weekly).
+    for (const d of ['2026-06-08', '2026-06-09', '2026-06-10']) {
+      const day = await get(app, token, d);
+      assert.equal(day.body.day.agenda.find((e) => e.hour === 14).activity, 'Activity A');
+    }
+    // Matching Sundays in Weekly range: Activity B.
+    for (const d of ['2026-06-14', '2026-06-21', '2026-06-28']) {
+      const day = await get(app, token, d);
+      assert.equal(day.body.day.agenda.find((e) => e.hour === 14).activity, 'Activity B');
+    }
+  });
+
   test('Clarification Q2 / SC-008: failure injection mid-fan-out leaves zero new entries', async () => {
     // We use a fresh app for each N to isolate state.
     for (const failAt of [0, 1, 2]) {

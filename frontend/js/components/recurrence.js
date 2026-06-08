@@ -73,7 +73,7 @@ export function mountRepeatPopover({ rowEl, sourceDate, sourceHour, sourceActivi
     <fieldset>
       <legend>How often?</legend>
       <label><input type="radio" name="repeat-type" value="daily" checked /> Every day</label>
-      <!-- US2 (T024) adds the weekly option here -->
+      <label><input type="radio" name="repeat-type" value="weekly" /> ${weekdayLabel}</label>
     </fieldset>
     <label for="repeat-until">Until</label>
     <input type="date" id="repeat-until" max="${maxUntil}" aria-describedby="repeat-until-hint" />
