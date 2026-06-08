@@ -102,6 +102,37 @@ jargon list. Backdrop click and Escape also act as **Not now**.
   and answered at that point in time. This is intentional and not a contradiction with
   the FR text.
 
+### Q6 — Full 14-block iteration in T013 (resolved 2026-06-08, via Round-2 `/speckit-analyze` finding G3)
+
+**Issue**: SC-004 mandates "100% coverage across **all 14 hour-blocks** on a sample date",
+but the Round-1 fix (Q4 / G2) only filled the 9 non-elapsed blocks (12:00–20:00) and
+asserted the ↻ icon was present on each. It did not test the elapsed rows (5 blocks) nor
+the empty-non-elapsed case — strictly only 9 of 14 positions and only one of the three
+gating conditions were exercised.
+
+**Resolution**: **T013 now iterates all 14 hour positions (07:00–20:00) and exercises all
+three gating conditions of FR-001/FR-002**:
+
+- **(a) Elapsed (07:00–11:00, 5 blocks)** → assert ↻ icon absent regardless of content.
+- **(b) Non-elapsed + filled (12:00–20:00, 9 blocks)** → fill each and assert ↻ icon
+  present.
+- **(c) Non-elapsed + empty** → clear one block from (b) (e.g., 14:00) and assert the
+  icon disappears.
+
+These three short steps together touch every hour position and every gating branch — the
+letter (14/14) and the spirit (all three conditions) of SC-004 are now both satisfied.
+
+### Q5 — Popover heading required for ARIA pattern (resolved 2026-06-08, via Round-2 `/speckit-analyze` finding I3)
+
+**Issue**: T029 mandated `aria-labelledby` on the popover wrapper pointing at "the popover
+heading", but T010's skeleton did not render a heading element — the ARIA target did not
+exist.
+
+**Resolution**: **T010 now renders `<h2 id="repeat-popover-title">Repeat ✨</h2>` at the
+top of the popover** (kid-friendly per FR-017 voice). T029's `aria-labelledby` is pinned
+to `"repeat-popover-title"` to match. The heading doubles as a visible title for sighted
+children and as the screen-reader announcement target for assistive tech.
+
 ### Q4 — `/speckit-analyze` MEDIUM/LOW findings (resolved 2026-06-08)
 
 The post-`/speckit-tasks` analysis pass surfaced 8 additional findings beyond I1. Each is
@@ -122,5 +153,5 @@ resolved below; the spec/plan/tasks are now consistent.
 
 - All checklist items pass. The spec is ready for `/speckit-plan` (or `/speckit-clarify`
   if you want a second pass for anything subtle the checklist did not flag).
-- All four resolved clarifications (Q1, Q2, Q3, Q4) have been encoded across multiple
-  sections so the intent cannot be lost during planning or implementation.
+- All six resolved clarifications (Q1, Q2, Q3, Q4, Q5, Q6) have been encoded across
+  multiple sections so the intent cannot be lost during planning or implementation.
