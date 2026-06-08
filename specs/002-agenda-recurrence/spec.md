@@ -108,16 +108,18 @@ covered by basic browser validation while US1 ships, but a quality implementatio
 the explicit rules and the kid-friendly tone.
 
 **Independent Test**: From a row that has an activity, open **Repeat**. With **Until**
-blank, confirm a tooltip in the format `YYYY-MM-DD` is shown. Enter each of: a malformed
-date, a non-existent date (e.g., `2026-02-30`), a past date, today's date, the source
-date, and a date more than 90 days after today — confirm each is rejected with a clear
-kid-friendly message. Then enter a valid date and confirm acceptance.
+blank, confirm the kid-friendly hint text (e.g., "Tap to pick a day") is shown — no
+literal date format. Drive the input to each of: a malformed value (forced via direct DOM
+value override, e.g. `06/10/2026`), a non-existent date (e.g., `2026-02-30`), today
+(= source date), a past date, and a date more than 90 days after today — confirm each is
+rejected with a clear kid-friendly message. Then pick a valid date via the native picker
+and confirm acceptance.
 
 **Acceptance Scenarios**:
 
-1. **Given** the **Until** field is empty, **When** the child focuses it, **Then** a
-   tooltip showing the format `YYYY-MM-DD` is displayed (e.g., "Pick a day like
-   2026-06-10").
+1. **Given** the **Until** field is empty, **When** the child focuses it, **Then**
+   kid-friendly hint text (e.g., "Tap to pick a day") is displayed and the native date
+   picker UI can be opened to select a date — no literal format string is shown.
 2. **Given** **Until** is `2026-02-30`, **When** the child confirms, **Then** the entry
    is rejected with a kid-friendly message that this day isn't on the calendar, and no
    future entries are created.
@@ -164,8 +166,8 @@ kid-friendly message. Then enter a valid date and confirm acceptance.
   try that again!").
 - **Child tries to use any other control while the Repeat popover is open**
   (Clarification Q3): the control is non-interactive — calendar dates, other agenda rows,
-  the star, wants, settings, and logout are all blocked until the child Confirms or
-  Cancels. Backdrop click and Escape both act as Cancel.
+  the star, wants, settings, and logout are all blocked until the child presses
+  **Confirm** or **Not now**. Backdrop click and Escape both act as **Not now**.
 - **Child double-clicks Confirm** (Clarification Q4): the Confirm button is disabled the
   moment the write begins (FR-022), so a second click has no effect — exactly one
   application of recurrence occurs per Confirm.
@@ -199,10 +201,13 @@ kid-friendly message. Then enter a valid date and confirm acceptance.
 
 **Until input**
 
-- **FR-006**: The **Until** input MUST accept dates in the format `YYYY-MM-DD`.
-- **FR-007**: When the **Until** input is blank, the system MUST display tooltip text
-  showing the format `YYYY-MM-DD` in a kid-friendly form (e.g., "Pick a day like
-  2026-06-10").
+- **FR-006**: The **Until** input MUST present a **native date picker** UI and MUST
+  produce a JavaScript value in the canonical `YYYY-MM-DD` form when the system reads it.
+  The format displayed inside the picker is locale-dependent and that is acceptable —
+  the child interacts with the picker visually rather than typing a literal date string.
+- **FR-007**: When the **Until** input is blank, the system MUST display kid-friendly
+  hint text (e.g., "Tap to pick a day"). The hint MUST NOT require the child to know any
+  literal date format because the picker UI does the formatting for them.
 - **FR-008**: The system MUST reject **Until** values that are not a valid calendar date
   (e.g., `2026-02-30`, `2026-13-01`, malformed strings) with a clear kid-friendly message
   and MUST NOT create any entries.
@@ -243,26 +248,27 @@ kid-friendly message. Then enter a valid date and confirm acceptance.
 
 - **FR-019**: The **Repeat** input MUST render as a **popover anchored to the source
   agenda row**, containing the **How often?** field, the **Until** field, and explicit
-  **Confirm** and **Cancel** actions.
+  **Confirm** and **Not now** actions.
 - **FR-020**: While the popover is open, all other dashboard interactions MUST be blocked
   — calendar navigation, agenda editing on other rows, star toggle, wallet, wants/rewards
-  controls, settings, and logout. The child MUST Confirm or Cancel to dismiss the popover.
-- **FR-021**: **Cancel** MUST close the popover without writing any entries and leave the
+  controls, settings, and logout. The child MUST press **Confirm** or **Not now** to
+  dismiss the popover.
+- **FR-021**: **Not now** MUST close the popover without writing any entries and leave the
   source block unchanged. Pressing **Escape** and clicking the modal backdrop MUST behave
-  as **Cancel** — consistent with feature 001's existing settings/logout modals — except
+  as **Not now** — consistent with feature 001's existing settings/logout modals — except
   during the busy state described in FR-022.
 
 **In-progress feedback (Clarification Q4)**
 
 - **FR-022**: While the fan-out write is in flight, the **Repeat** popover MUST remain
-  open with both **Confirm** and **Cancel** disabled and a **wand-themed busy indicator**
+  open with both **Confirm** and **Not now** disabled and a **wand-themed busy indicator**
   (a small rotating wand 🪄 / sparkle ✨ visual aligned with feature 001's ocean/princess
   theme — see project constitution Principle IV) shown in place of the action buttons.
   Escape and backdrop click MUST be ignored during this state.
 - **FR-023**: The popover MUST NOT close until the write resolves. On success the popover
   closes per FR-016. On failure the busy indicator MUST be replaced with the kid-friendly
-  retry message (per FR-017 / FR-018) and Confirm/Cancel re-enabled so the child can
-  retry or back out.
+  retry message (per FR-017 / FR-018) and **Confirm** / **Not now** re-enabled so the
+  child can retry or back out.
 
 **Child-friendly voice (NEW)**
 
@@ -317,8 +323,9 @@ kid-friendly message. Then enter a valid date and confirm acceptance.
   Verifiable by inspecting the agenda on each affected date.
 - **SC-007** (new): Every user-facing label, tooltip, and error message introduced by
   this feature passes a readability check at or below a **primary-school reading level**
-  (≤ Grade 4 / ages 9–10), measured by a standard readability score (e.g.,
-  Flesch–Kincaid ≤ 4) on the collected on-screen copy.
+  (≤ Grade 4 / ages 9–10), measured by the **Flesch–Kincaid Grade Level** score (≤ 4)
+  on the collected on-screen copy. (Specifically the Grade Level variant, not the
+  Reading Ease variant where the scale runs the opposite direction.)
 - **SC-008** (new): A simulated failure injected at any single write within the fan-out
   results in **zero** new agenda entries on every target date AND an unchanged source
   block — measured by an integration test that injects a database error at write #N for

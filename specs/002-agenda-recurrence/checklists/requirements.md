@@ -73,9 +73,54 @@ introduced by this feature follow feature 001's Principle IV (Child-First UX) vo
   labels.
 - Assumptions: bullet cross-referencing Principle IV and existing component tone.
 
+### Q3 — Negative-action button label (resolved 2026-06-08, via `/speckit-analyze` finding I1)
+
+**Issue**: The original spec mandated a "Cancel" action button in FR-021 while FR-017's
+no-jargon list explicitly listed "cancel" as a word to avoid — internal contradiction.
+
+**Resolution**: **The negative-action button (close-without-applying) is labelled
+"Not now"** — short, encouraging, second-person-friendly, and absent from FR-017's
+jargon list. Backdrop click and Escape also act as **Not now**.
+
+**Where it's encoded in spec.md and siblings**:
+
+- **FR-019** — picker actions are **Confirm** and **Not now**.
+- **FR-020** — "the child MUST press **Confirm** or **Not now** to dismiss the popover".
+- **FR-021** — "**Not now** MUST close the popover…"; ESC + backdrop click both behave
+  as **Not now**.
+- **FR-022 / FR-023** — busy state disables **Confirm** + **Not now**; failure re-enables
+  both.
+- Edge case bullet for "Child tries to use any other control while the Repeat popover is
+  open" — updated to **Not now**.
+- [tasks.md](../tasks.md) **T010 / T016 / T019** — popover skeleton, Confirm handler, and
+  modality task all reference **Not now**.
+- [quickstart.md](../quickstart.md) smoke-test step 6 — describes ESC / backdrop as
+  acting as **Not now**.
+- [research.md](../research.md) §4 and §5 — narrative updated to **Not now**.
+- **Historical record kept verbatim**: the `## Clarifications` Session 2026-06-07 bullets
+  for Q3 and Q4 in spec.md still say "Cancel" because they are an audit of what was asked
+  and answered at that point in time. This is intentional and not a contradiction with
+  the FR text.
+
+### Q4 — `/speckit-analyze` MEDIUM/LOW findings (resolved 2026-06-08)
+
+The post-`/speckit-tasks` analysis pass surfaced 8 additional findings beyond I1. Each is
+resolved below; the spec/plan/tasks are now consistent.
+
+| Finding | Severity | Resolution |
+| --- | --- | --- |
+| **U1** — native `<input type="date">` shows locale format ("06/10/2026") but FR-007 mandated a `YYYY-MM-DD` tooltip → confusing for the child | MEDIUM | spec.md **FR-006** rewritten: input MUST present a native date picker, JS value MUST be YYYY-MM-DD, displayed format inside the picker is locale-dependent and acceptable. **FR-007** rewritten: blank-state hint is now kid-friendly (e.g. "Tap to pick a day"), no literal format string shown. **US3 AC1** updated accordingly. tasks.md **T017** + **T027** updated; T025 (validation E2E) clarified that the format-failure cases drive the input via direct DOM value override since the native picker prevents typing. |
+| **G1** — SC-001/002/003 timing budgets had no test assertions | MEDIUM | tasks.md **T013** (Daily E2E) asserts `elapsed < 2000 ms` per SC-001; **T022** (Weekly E2E) asserts `< 2000 ms` per SC-002; **T025** (Validation E2E) asserts `< 200 ms` per SC-003. All use `performance.now()` around the Confirm click. |
+| **G2** — SC-004 "100% coverage across 14 hour-blocks" only spot-checked one row | MEDIUM | tasks.md **T013** extended to fill every non-elapsed hour-block on the sample date (12:00–21:00) and assert the ↻ icon appears on each — directly verifies SC-004. |
+| **A1** — FR-022 "small" wand visual was qualitative | LOW | tasks.md **T008** pins concrete values: 🪄 at `font-size: 28px`, flanking ✨ at `font-size: 18px`, rotation 1.4 s/turn, opacity-pulse keyframe, plus `prefers-reduced-motion: reduce` honoured. |
+| **A2** — SC-007 "Flesch–Kincaid ≤ 4" was ambiguous (Grade Level vs Reading Ease) | LOW | spec.md **SC-007** now says **Flesch–Kincaid Grade Level** explicitly, with a parenthetical noting the Reading Ease variant is *not* what's meant. tasks.md **T028** mirrors the wording. |
+| **U2** — T029 ARIA labels only enumerated the ↻ icon | LOW | tasks.md **T029** now enumerates labels for the ↻ icon, the **Confirm** button, the **Not now** button, the **How often?** radio group, each radio option, and the **Until** date input, plus role/aria-modal/aria-labelledby on the popover wrapper. |
+| **U3** — T004 declared an unused `agendaService` dependency | LOW | tasks.md **T004** signature tightened to `createRecurrenceService(db, timeLib)` per research.md §2 (raw prepared statements, no agendaService wrapper). **T005** updated to match. |
+| **I2** — plan.md Summary said "~2 new frontend modules" but actually one new module + edits | LOW | plan.md Summary tightened: "1 new endpoint, 1 new backend service module, 1 new frontend component module (plus edits to agenda.js, api.js, styles.css), 4 new test files". |
+
 ## Notes
 
 - All checklist items pass. The spec is ready for `/speckit-plan` (or `/speckit-clarify`
   if you want a second pass for anything subtle the checklist did not flag).
-- Both resolved clarifications (Q1, Q2) have been encoded across multiple sections so the
-  intent cannot be lost during planning or implementation.
+- All four resolved clarifications (Q1, Q2, Q3, Q4) have been encoded across multiple
+  sections so the intent cannot be lost during planning or implementation.

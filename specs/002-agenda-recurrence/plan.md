@@ -47,7 +47,9 @@ SC-008). (c) `Until` cap enforced both client-side (immediate feedback) and serv
 window against the supplied `clientDate`/`clientTime`, same convention as feature 001's
 mutating endpoints.
 **Scale/Scope**: One child × one source row × ≤90 entries per series (Daily) / ≤13 (Weekly).
-~1 new endpoint, ~1 new service module, ~2 new frontend modules, ~3 new test files.
+1 new endpoint, 1 new backend service module, 1 new frontend component module
+(plus edits to `agenda.js`, `api.js`, `styles.css`), 4 new test files (1 contract, 1
+integration, 2 e2e — Daily and Weekly — plus 1 validation e2e).
 
 ## Constitution Check
 
@@ -139,8 +141,10 @@ backend/tests/e2e/
 **Structure Decision**: Reuse feature 001's web-application structure verbatim. No new
 top-level folders. The frontend gets one new component module (`recurrence.js`) and the
 backend gets one new service module (`recurrenceService.js`); both are scoped to the
-agenda slice and have no dependencies on feature 001 changes other than the existing
-`agendaService` and the existing time helpers.
+agenda slice. `recurrenceService` depends only on `db` (the SQLite connection) and the
+existing time helpers in `backend/src/lib/time.js` — it does **not** wrap or import
+`agendaService` (see research.md §2: the fan-out is implemented as a single prepared
+upsert inside a transaction, not via per-row service calls).
 
 ## Phase 0 Research Summary
 

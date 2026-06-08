@@ -109,8 +109,8 @@ CLARIFICATION" item in plan.md's Technical Context, and the alternatives conside
   (translucent backdrop, captures clicks). The popover itself adds one new class,
   `.repeat-popover`, with absolute positioning relative to the agenda row.
 
-  Clarification Q3 locked: the popover is **modal in behaviour** — Confirm or Cancel
-  required to dismiss, with ESC and backdrop click acting as Cancel.
+  Clarification Q3 locked: the popover is **modal in behaviour** — **Confirm** or
+  **Not now** required to dismiss, with ESC and backdrop click acting as **Not now**.
 - **Rationale**:
   - The scrim pattern already exists for the settings and logout modals; reusing it
     means zero new global UX primitives and consistent dismissal behaviour.
@@ -128,7 +128,7 @@ CLARIFICATION" item in plan.md's Technical Context, and the alternatives conside
 
 - **Decision**: An emoji-based spinner — a 🪄 character wrapped in a `<span>` with a CSS
   `@keyframes` rotation. Two flanking ✨ sparkles fade in/out via a second keyframe.
-  Replaces the Confirm/Cancel button row inside the popover when the fan-out is in flight.
+  Replaces the **Confirm** / **Not now** button row inside the popover when the fan-out is in flight.
 - **Rationale**:
   - Zero new asset to ship; matches the ocean/princess theme already in use without an SVG.
   - CSS-only animation is lightweight and reduces motion-sickness risk vs. spinning

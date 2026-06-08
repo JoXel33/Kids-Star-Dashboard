@@ -69,7 +69,7 @@ After `npm start`:
 5. **Atomicity** — best confirmed by the integration test; no easy manual repro.
 6. **Modality** — while the popover is open, calendar dates, other agenda rows, the star,
    wants, and the logout button MUST all be non-interactive. Click outside → popover
-   closes (Cancel). Press ESC → popover closes (Cancel).
+   closes (acts as **Not now**). Press ESC → popover closes (acts as **Not now**).
 7. **Double-click Confirm** — click Confirm twice in quick succession → exactly one
    application should land (button is disabled after the first click).
 
