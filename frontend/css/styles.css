@@ -283,8 +283,12 @@ body {
 
 /* Recurrence — affordance (↻ icon), popover, and wand spinner */
 /* When the row has activity and is not elapsed, constrain the clickable
-   activity area to column 2 so the ↻ icon fits in column 3. */
+   activity area to column 2 so the action icons fit in column 3. */
 .agenda-row .activity-clickable.with-recurrence { grid-column: 2; }
+/* Both row actions (↻ then ✕) live in column 3, flush-right with 12px between. */
+.agenda-row .row-actions {
+  display: flex; align-items: center; justify-content: flex-end; gap: 12px;
+}
 .recurrence-btn {
   background: none; border: none; cursor: pointer;
   color: #8040c0; font-size: 18px; line-height: 1;

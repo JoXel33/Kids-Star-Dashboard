@@ -78,13 +78,21 @@ export function mountAgenda(container) {
           <span class="time">${timeLabel}</span>
           <button class="${clickableClass}" type="button" aria-label="Edit activity for ${timeLabel}">${activity ? escapeHtml(activity) : '<em>(tap to add)</em>'}</button>`;
         if (hasContent) {
-          html += `<button class="recurrence-btn" type="button" aria-label="Repeat this activity" data-hour="${h}">↻</button>`;
+          html += `
+            <span class="row-actions">
+              <button class="recurrence-btn" type="button" aria-label="Repeat this activity" data-hour="${h}">↻</button>
+              <button class="remove-btn" type="button" aria-label="Remove activity for ${timeLabel}" data-hour="${h}">✕</button>
+            </span>`;
         }
         row.innerHTML = html;
         row.querySelector('.activity-clickable').addEventListener('click', () => { editingHour = h; render(); });
         const recBtn = row.querySelector('.recurrence-btn');
         if (recBtn) {
           recBtn.addEventListener('click', () => openRecurrence(row, h, activity));
+        }
+        const removeBtn = row.querySelector('.remove-btn');
+        if (removeBtn) {
+          removeBtn.addEventListener('click', () => saveRow(h, ''));
         }
       }
       list.appendChild(row);
