@@ -1,6 +1,29 @@
 import { api } from '../api.js';
 import { getState, setState, subscribe } from '../state.js';
 import { isBlockElapsed, nowTime, AGENDA_START_HOUR, AGENDA_END_HOUR } from '../time.js';
+import { mountRepeatPopover } from './recurrence.js';
+
+function invalidateCachedDays(dates) {
+  // If the currently-selected date is in the returned `dates` array, drop the
+  // cached `day` so the next render fetches fresh.
+  const { selectedDate } = getState();
+  if (!selectedDate) return;
+  if (Array.isArray(dates) && dates.includes(selectedDate)) {
+    setState({ day: null });
+  }
+}
+
+function openRecurrence(rowEl, hour, activity) {
+  const { selectedDate, today } = getState();
+  mountRepeatPopover({
+    rowEl,
+    sourceDate: selectedDate,
+    sourceHour: hour,
+    sourceActivity: activity,
+    today,
+    onApplied: invalidateCachedDays,
+  });
+}
 
 const HOURS = Array.from({ length: AGENDA_END_HOUR - AGENDA_START_HOUR }, (_, i) => AGENDA_START_HOUR + i);
 
@@ -47,10 +70,22 @@ export function mountAgenda(container) {
         });
         row.querySelector('.save-btn').addEventListener('click', () => saveRow(h, input.value));
       } else {
-        row.innerHTML = `
+        const hasContent = activity.trim() !== '';
+        const clickableClass = hasContent
+          ? 'activity activity-clickable with-recurrence'
+          : 'activity activity-clickable';
+        let html = `
           <span class="time">${timeLabel}</span>
-          <button class="activity activity-clickable" type="button" aria-label="Edit activity for ${timeLabel}">${activity ? escapeHtml(activity) : '<em>(tap to add)</em>'}</button>`;
+          <button class="${clickableClass}" type="button" aria-label="Edit activity for ${timeLabel}">${activity ? escapeHtml(activity) : '<em>(tap to add)</em>'}</button>`;
+        if (hasContent) {
+          html += `<button class="recurrence-btn" type="button" aria-label="Repeat this activity" data-hour="${h}">↻</button>`;
+        }
+        row.innerHTML = html;
         row.querySelector('.activity-clickable').addEventListener('click', () => { editingHour = h; render(); });
+        const recBtn = row.querySelector('.recurrence-btn');
+        if (recBtn) {
+          recBtn.addEventListener('click', () => openRecurrence(row, h, activity));
+        }
       }
       list.appendChild(row);
     }

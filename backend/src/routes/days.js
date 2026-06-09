@@ -1,6 +1,6 @@
 import express from 'express';
 
-export function createDaysRouter({ agendaService, starService, authMiddleware }) {
+export function createDaysRouter({ agendaService, starService, recurrenceService, authMiddleware }) {
   const router = express.Router();
   router.use(authMiddleware);
 
@@ -29,6 +29,17 @@ export function createDaysRouter({ agendaService, starService, authMiddleware })
       const { earned, clientDate, clientTime } = req.body || {};
       const star = starService.setStar(req.child.id, date, !!earned, clientDate, clientTime);
       res.json({ star });
+    } catch (e) { next(e); }
+  });
+
+  router.post('/:date/agenda/:hour/recurrence', (req, res, next) => {
+    try {
+      const date = req.params.date;
+      const hour = Number.parseInt(req.params.hour, 10);
+      const result = recurrenceService.applyRecurrence(
+        req.child.id, date, hour, req.body || {},
+      );
+      res.json(result);
     } catch (e) { next(e); }
   });
 
